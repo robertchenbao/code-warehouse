@@ -5,6 +5,7 @@ from django.db import models
 class User(models.Model):
     username = models.CharField(max_length=20)
     email = models.EmailField()
+    password = models.CharField(max_length=32)
 
     def __str__(self):
         return "%s %s" % (self.username, self.email)
