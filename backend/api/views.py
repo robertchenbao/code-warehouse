@@ -23,3 +23,21 @@ class AddCodeSnippet(CreateAPIView):
 class GetCodeSnippets(ListAPIView):
     queryset = CodeSnippets.objects.all()
     serializer_class = CodeSnippetsSerializer
+
+
+class SearchCodeSnippet(ListAPIView):
+
+    serializer_class = CodeSnippetsSerializer
+
+    def get_queryset(self):
+        """
+        This view should return a list of all the purchases
+        for the currently authenticated user.
+        """
+        # title = self.request.title
+        # return CodeSnippets.objects.filter(title=title)
+        queryset = CodeSnippets.objects.all()
+        title = self.request.query_params.get('title')
+        if title is not None:
+            queryset = queryset.filter(title=title)
+        return queryset
