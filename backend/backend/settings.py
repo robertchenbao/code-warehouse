@@ -32,7 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'haystack',  # add haystack for full-text searches
+    'django.contrib.postgres',  # for full-text searches
     'api',
     'rest_framework',
 ]
