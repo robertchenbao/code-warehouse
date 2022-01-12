@@ -1,18 +1,167 @@
-import logo from "./logo.svg";
-import "./App.css";
+import React, { useState } from "react";
+import { styled, alpha } from "@mui/material/styles";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import InputBase from "@mui/material/InputBase";
+import SearchIcon from "@mui/icons-material/Search";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CloudOutlinedIcon from "@mui/icons-material/CloudOutlined";
+import logo from "./logo.svg"; // Tell webpack this JS file uses this image
+import Drawer from "@mui/material/Drawer";
+import { useTheme } from "@mui/material/styles";
+import InputAdornment from "@mui/material/InputAdornment";
+import Input from "@mui/material/Input";
 
-function App() {
+const drawerWidth = 260;
+
+const Search = styled("div")(({ theme }) => ({
+    position: "relative",
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: alpha(theme.palette.common.white, 0.15),
+    "&:hover": {
+        backgroundColor: alpha(theme.palette.common.white, 0.25),
+    },
+    marginRight: theme.spacing(2),
+    marginLeft: 0,
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+        marginLeft: theme.spacing(3),
+        width: "auto",
+    },
+}));
+
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+    padding: theme.spacing(0, 2),
+    height: "100%",
+    position: "absolute",
+    pointerEvents: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+    color: "inherit",
+    "& .MuiInputBase-input": {
+        padding: theme.spacing(1, 1, 1, 0),
+        width: "100%",
+        [theme.breakpoints.up("md")]: {
+            width: "60ch",
+        },
+    },
+}));
+
+export default function WeatherApp() {
+    // the incoming data from backend (all code snippets)
+    const [codeSnippets, setCodeSnippets] = useState(null);
+
+    // the search keyword -- from user search input
+    const [searchKeyword, setSearchKeyword] = useState("");
+
+    const theme = useTheme();
+    // Function for fetching data from forecasts api using location data from another endpoint
+
+    // display the results on frontend
+    function displayContent() {
+        if (!codeSnippets) {
+            return (
+                <div className="flex flex-row  w-full">
+                    <Box
+                        component="nav"
+                        sx={{
+                            width: { sm: drawerWidth },
+                            flexShrink: { sm: 0 },
+                        }}
+                        aria-label="mailbox folders"
+                        style={{ zIndex: theme.zIndex.appBar - 1 }}
+                    >
+                        <Drawer
+                            variant="permanent"
+                            sx={{
+                                display: { xs: "none", sm: "block" },
+                                "& .MuiDrawer-paper": {
+                                    boxSizing: "border-box",
+                                    width: drawerWidth,
+                                },
+                            }}
+                            open
+                        >
+                            <Toolbar />
+                            Hey
+                        </Drawer>
+                    </Box>
+                    <Box
+                        component="main"
+                        sx={{
+                            flexGrow: 1,
+                            p: 3,
+                            width: { sm: `calc(100% - ${drawerWidth}px)` },
+                        }}
+                    >
+                        <Toolbar />
+                        <h1 className="text-center text-xl py-60">
+                            Search for a code snippet from the menu above.
+                            <br />
+                            (For example, try "React".)
+                        </h1>
+                    </Box>
+                </div>
+            );
+        } else {
+            return <div>TODO</div>;
+        }
+    }
+
+    // submit the search form
+    function handleSearchSubmit(event) {
+        // TODO
+    }
+
+    // handle search value change -- update the current state if needed
+    function handleSearchChange(event) {
+        setSearchKeyword(event.target.value);
+    }
+
     return (
-        <div className="App">
-            <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-                <p>
-                    Edit <code>src/App.js</code> and save to reload.
-                </p>
-                <h1 className="text-3xl font-bold underline">Hello world!</h1>
-            </header>
+        <div>
+            <Box className="flex-grow">
+                <AppBar position="fixed">
+                    <Toolbar>
+                        <img src={logo} width="50px" className="mr-4" />
+                        <Typography
+                            variant="h6"
+                            noWrap
+                            component="div"
+                            className="w-60"
+                            sx={{ display: { xs: "none", sm: "block" } }}
+                        >
+                            Code Warehouse
+                        </Typography>
+                        <div className="flex items-center w-full rounded-8 text-black">
+                            <form onSubmit={handleSearchSubmit}>
+                                <StyledInputBase
+                                    startAdornment={
+                                        <InputAdornment position="start">
+                                            <SearchIcon className="ml-2" />
+                                        </InputAdornment>
+                                    }
+                                    placeholder="Search for a code snippet..."
+                                    inputProps={{ "aria-label": "search" }}
+                                    className="bg-white rounded-lg text-sm shadow"
+                                    type="text"
+                                    value={searchKeyword}
+                                    onChange={handleSearchChange}
+                                />
+                            </form>
+                        </div>
+                        <Box sx={{ flexGrow: 1 }} />
+                    </Toolbar>
+                </AppBar>
+            </Box>
+            {displayContent()}
         </div>
     );
 }
-
-export default App;
