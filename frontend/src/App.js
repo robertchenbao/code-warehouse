@@ -43,7 +43,7 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
     justifyContent: "center",
 }));
 
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
+const SearchInput = styled(InputBase)(({ theme }) => ({
     color: "inherit",
     "& .MuiInputBase-input": {
         padding: theme.spacing(1, 1, 1, 0),
@@ -68,61 +68,56 @@ export default function WeatherApp() {
     function displayContent() {
         if (!codeSnippets) {
             return (
-                <div className="flex flex-row  w-full">
-                    <Box
-                        component="nav"
-                        sx={{
-                            width: { sm: drawerWidth },
-                            flexShrink: { sm: 0 },
-                        }}
-                        aria-label="mailbox folders"
-                        style={{ zIndex: theme.zIndex.appBar - 1 }}
-                    >
-                        <Drawer
-                            variant="permanent"
-                            sx={{
-                                display: { xs: "none", sm: "block" },
-                                "& .MuiDrawer-paper": {
-                                    boxSizing: "border-box",
-                                    width: drawerWidth,
-                                },
-                            }}
-                            open
-                        >
-                            <Toolbar />
-                            Hey
-                        </Drawer>
-                    </Box>
-                    <Box
-                        component="main"
-                        sx={{
-                            flexGrow: 1,
-                            p: 3,
-                            width: { sm: `calc(100% - ${drawerWidth}px)` },
-                        }}
-                    >
-                        <Toolbar />
-                        <h1 className="text-center text-xl py-60">
-                            Search for a code snippet from the menu above.
-                            <br />
-                            (For example, try "React".)
-                        </h1>
-                    </Box>
+                <div>
+                    <h1 className="text-center text-xl py-60">
+                        Search for a code snippet from the menu above.
+                        <br />
+                        (For example, try "React".)
+                    </h1>
+                </div>
+            );
+        } else if (codeSnippets.length === 0) {
+            return (
+                <div>
+                    <h1 className="text-center text-xl py-60">
+                        No result found!
+                    </h1>
                 </div>
             );
         } else {
-            return <div>TODO</div>;
+            return (
+                <div>
+                    {/* TODO: Build real code snippet card*/}
+                    {codeSnippets.map((record, index) => (
+                        <div key={index}>Hello there</div>
+                    ))}
+                </div>
+            );
         }
     }
 
     // submit the search form
     function handleSearchSubmit(event) {
-        // TODO
+        const forecastUrl = `http://127.0.0.1:8000/api/read/snippet/?keyword=${searchKeyword}/`;
+        fetch(forecastUrl, {
+            // posts the form to users/me/items. You need to login to be able to send this
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                setCodeSnippets(data);
+                console.log(data);
+            });
+        event.preventDefault();
     }
 
     // handle search value change -- update the current state if needed
     function handleSearchChange(event) {
         setSearchKeyword(event.target.value);
+        console.log(event.target.value);
     }
 
     return (
@@ -142,7 +137,7 @@ export default function WeatherApp() {
                         </Typography>
                         <div className="flex items-center w-full rounded-8 text-black">
                             <form onSubmit={handleSearchSubmit}>
-                                <StyledInputBase
+                                <SearchInput
                                     startAdornment={
                                         <InputAdornment position="start">
                                             <SearchIcon className="ml-2" />
@@ -161,7 +156,43 @@ export default function WeatherApp() {
                     </Toolbar>
                 </AppBar>
             </Box>
-            {displayContent()}
+            <div className="flex flex-row  w-full">
+                <Box
+                    component="nav"
+                    sx={{
+                        width: { sm: drawerWidth },
+                        flexShrink: { sm: 0 },
+                    }}
+                    aria-label="mailbox folders"
+                    style={{ zIndex: theme.zIndex.appBar - 1 }}
+                >
+                    <Drawer
+                        variant="permanent"
+                        sx={{
+                            display: { xs: "none", sm: "block" },
+                            "& .MuiDrawer-paper": {
+                                boxSizing: "border-box",
+                                width: drawerWidth,
+                            },
+                        }}
+                        open
+                    >
+                        <Toolbar />
+                        Hey
+                    </Drawer>
+                </Box>
+                <Box
+                    component="main"
+                    sx={{
+                        flexGrow: 1,
+                        p: 3,
+                        width: { sm: `calc(100% - ${drawerWidth}px)` },
+                    }}
+                >
+                    <Toolbar />
+                    {displayContent()}
+                </Box>
+            </div>
         </div>
     );
 }
