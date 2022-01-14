@@ -17,6 +17,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import SourceIcon from "@mui/icons-material/Source";
 import List from "@mui/material/List";
+import Chip from "@mui/material/Chip";
 
 const drawerWidth = 260;
 
@@ -31,6 +32,32 @@ const SearchInput = styled(InputBase)(({ theme }) => ({
     },
 }));
 
+/*
+Display the code snippets in tiles/cards
+*/
+function CodeSnippetCard(props) {
+    const title = props.title;
+    const content = props.content;
+    const category = props.category;
+    return (
+        <Card
+            className="my-6 mx-6 h-128"
+            elevation={2}
+            sx={{ borderRadius: 3 }}
+        >
+            <CardContent className="flex content-between flex-col">
+                <Typography variant="h4">{title}</Typography>
+                <Typography variant="body1">{content}</Typography>
+                <Chip
+                    label={category}
+                    color="secondary"
+                    className="w-16 mt-4"
+                />
+            </CardContent>
+        </Card>
+    );
+}
+
 export default function CodeWarehouseApp() {
     // the incoming data from backend (all code snippets)
     const [codeSnippets, setCodeSnippets] = useState(null);
@@ -43,6 +70,7 @@ export default function CodeWarehouseApp() {
 
     function handleSidebarItemClick(ev, searchKeyword, index) {
         setSelectedIndex(index);
+        console.log("searchKeyword: " + searchKeyword);
         ev.preventDefault();
         // TODO: Add backend call to get search rsults
     }
@@ -71,10 +99,15 @@ export default function CodeWarehouseApp() {
             );
         } else {
             return (
-                <div>
+                <div className="flex justify-center flex-col overflow-auto">
                     {/* TODO: Build real code snippet card*/}
                     {codeSnippets.map((record, index) => (
-                        <div key={index}>Hello there</div>
+                        <CodeSnippetCard
+                            key={index}
+                            title={record.title}
+                            content={record.content}
+                            category={record.category}
+                        />
                     ))}
                 </div>
             );
@@ -106,11 +139,19 @@ export default function CodeWarehouseApp() {
     }
 
     return (
-        <div>
-            <Box className="flex-grow">
+        <Box
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                minHeight: "100vh",
+                flexGrow: 1,
+                backgroundColor: "#F5F5F5",
+            }}
+        >
+            <Box>
                 <AppBar position="fixed">
                     <Toolbar>
-                        <img src={logo} width="50px" className="mr-4" />
+                        <img src={logo} width="45px" className="mr-4" />
                         <Typography
                             variant="h6"
                             noWrap
@@ -130,7 +171,10 @@ export default function CodeWarehouseApp() {
                                     }
                                     placeholder="Search for a code snippet..."
                                     inputProps={{ "aria-label": "search" }}
-                                    className="bg-white rounded-lg text-sm shadow"
+                                    className="rounded-lg text-sm shadow"
+                                    sx={{
+                                        backgroundColor: "#F5F5F5",
+                                    }}
                                     type="text"
                                     value={searchKeyword}
                                     onChange={handleSearchChange}
@@ -141,7 +185,7 @@ export default function CodeWarehouseApp() {
                     </Toolbar>
                 </AppBar>
             </Box>
-            <div className="flex flex-row  w-full">
+            <div className="flex flex-row w-full">
                 <Box
                     component="nav"
                     sx={{
@@ -168,37 +212,41 @@ export default function CodeWarehouseApp() {
                                 By Categories
                             </h4>
                             <List>
-                                {["Python", "JavaScript", "Java", "C++"].map(
-                                    (text, index) => (
-                                        <ListItem
-                                            button
-                                            key={text}
-                                            sx={{
-                                                height: 40,
-                                                width: "calc(100% - 4px)",
-                                                marginY: "2px",
-                                                borderRadius: "0 20px 20px 0",
-                                                paddingRight: 12,
-                                                cursor: "pointer",
-                                                textDecoration:
-                                                    "none!important",
-                                            }}
-                                            selected={selectedIndex === index}
-                                            onClick={(event) =>
-                                                handleSidebarItemClick(
-                                                    event,
-                                                    "TODO",
-                                                    index
-                                                )
-                                            }
-                                        >
-                                            <ListItemIcon>
-                                                <SourceIcon />
-                                            </ListItemIcon>
-                                            <ListItemText primary={text} />
-                                        </ListItem>
-                                    )
-                                )}
+                                {[
+                                    "Python",
+                                    "JavaScript",
+                                    "Java",
+                                    "C++",
+                                    "Go",
+                                    "Scala",
+                                ].map((text, index) => (
+                                    <ListItem
+                                        button
+                                        key={text}
+                                        sx={{
+                                            height: 40,
+                                            width: "calc(100% - 4px)",
+                                            marginY: "2px",
+                                            borderRadius: "0 20px 20px 0",
+                                            paddingRight: 12,
+                                            cursor: "pointer",
+                                            textDecoration: "none!important",
+                                        }}
+                                        selected={selectedIndex === index}
+                                        onClick={(event) =>
+                                            handleSidebarItemClick(
+                                                event,
+                                                text,
+                                                index
+                                            )
+                                        }
+                                    >
+                                        <ListItemIcon>
+                                            <SourceIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary={text} />
+                                    </ListItem>
+                                ))}
                             </List>
                         </div>
                     </Drawer>
@@ -207,7 +255,7 @@ export default function CodeWarehouseApp() {
                     component="main"
                     sx={{
                         flexGrow: 1,
-                        p: 3,
+                        p: 2,
                         width: { sm: `calc(100% - ${drawerWidth}px)` },
                     }}
                 >
@@ -215,6 +263,6 @@ export default function CodeWarehouseApp() {
                     {displayContent()}
                 </Box>
             </div>
-        </div>
+        </Box>
     );
 }
