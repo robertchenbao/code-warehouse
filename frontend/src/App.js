@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { styled, alpha } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -12,7 +12,11 @@ import logo from "./logo.svg"; // Tell webpack this JS file uses this image
 import Drawer from "@mui/material/Drawer";
 import { useTheme } from "@mui/material/styles";
 import InputAdornment from "@mui/material/InputAdornment";
-import Input from "@mui/material/Input";
+import ListItem from "@mui/material/ListItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import SourceIcon from "@mui/icons-material/Source";
+import List from "@mui/material/List";
 
 const drawerWidth = 260;
 
@@ -34,6 +38,14 @@ export default function CodeWarehouseApp() {
     // the search keyword -- from user search input
     const [searchKeyword, setSearchKeyword] = useState("");
 
+    // the index of the side bar item; manage which item to be highlighted
+    const [selectedIndex, setSelectedIndex] = React.useState();
+
+    function handleSidebarItemClick(ev, searchKeyword, index) {
+        setSelectedIndex(index);
+        ev.preventDefault();
+        // TODO: Add backend call to get search rsults
+    }
     const theme = useTheme();
     // Function for fetching data from forecasts api using location data from another endpoint
 
@@ -151,7 +163,44 @@ export default function CodeWarehouseApp() {
                         open
                     >
                         <Toolbar />
-                        Hey
+                        <div>
+                            <h4 className="px-4 mt-6 mb-2 font-semibold">
+                                By Categories
+                            </h4>
+                            <List>
+                                {["Python", "JavaScript", "Java", "C++"].map(
+                                    (text, index) => (
+                                        <ListItem
+                                            button
+                                            key={text}
+                                            sx={{
+                                                height: 40,
+                                                width: "calc(100% - 4px)",
+                                                marginY: "2px",
+                                                borderRadius: "0 20px 20px 0",
+                                                paddingRight: 12,
+                                                cursor: "pointer",
+                                                textDecoration:
+                                                    "none!important",
+                                            }}
+                                            selected={selectedIndex === index}
+                                            onClick={(event) =>
+                                                handleSidebarItemClick(
+                                                    event,
+                                                    "TODO",
+                                                    index
+                                                )
+                                            }
+                                        >
+                                            <ListItemIcon>
+                                                <SourceIcon />
+                                            </ListItemIcon>
+                                            <ListItemText primary={text} />
+                                        </ListItem>
+                                    )
+                                )}
+                            </List>
+                        </div>
                     </Drawer>
                 </Box>
                 <Box
