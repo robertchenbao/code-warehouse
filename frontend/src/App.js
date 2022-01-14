@@ -18,7 +18,9 @@ import ListItemText from "@mui/material/ListItemText";
 import SourceIcon from "@mui/icons-material/Source";
 import List from "@mui/material/List";
 import Chip from "@mui/material/Chip";
-
+import IconButton from "@mui/material/IconButton";
+import AddIcon from "@mui/icons-material/Add";
+import { useNavigate } from "react-router-dom";
 const drawerWidth = 260;
 
 const SearchInput = styled(InputBase)(({ theme }) => ({
@@ -27,7 +29,7 @@ const SearchInput = styled(InputBase)(({ theme }) => ({
         padding: theme.spacing(1, 1, 1, 0),
         width: "100%",
         [theme.breakpoints.up("md")]: {
-            width: "60ch",
+            width: "600px",
         },
     },
 }));
@@ -59,6 +61,8 @@ function CodeSnippetCard(props) {
 }
 
 export default function CodeWarehouseApp() {
+    const history = useNavigate();
+
     // the incoming data from backend (all code snippets)
     const [codeSnippets, setCodeSnippets] = useState(null);
 
@@ -145,46 +149,51 @@ export default function CodeWarehouseApp() {
                 flexDirection: "column",
                 minHeight: "100vh",
                 flexGrow: 1,
-                backgroundColor: "#F5F5F5",
+                backgroundColor: theme.palette.background.main,
             }}
         >
-            <Box>
-                <AppBar position="fixed">
-                    <Toolbar>
-                        <img src={logo} width="45px" className="mr-4" />
-                        <Typography
-                            variant="h6"
-                            noWrap
-                            component="div"
-                            className="w-60"
-                            sx={{ display: { xs: "none", sm: "block" } }}
-                        >
-                            Code Warehouse
-                        </Typography>
-                        <div className="flex items-center w-full rounded-8 text-black">
-                            <form onSubmit={handleSearchSubmit}>
-                                <SearchInput
-                                    startAdornment={
-                                        <InputAdornment position="start">
-                                            <SearchIcon className="ml-2" />
-                                        </InputAdornment>
-                                    }
-                                    placeholder="Search for a code snippet..."
-                                    inputProps={{ "aria-label": "search" }}
-                                    className="rounded-lg text-sm shadow"
-                                    sx={{
-                                        backgroundColor: "#F5F5F5",
-                                    }}
-                                    type="text"
-                                    value={searchKeyword}
-                                    onChange={handleSearchChange}
-                                />
-                            </form>
-                        </div>
-                        <Box sx={{ flexGrow: 1 }} />
-                    </Toolbar>
-                </AppBar>
-            </Box>
+            <AppBar position="fixed">
+                <Toolbar>
+                    <img src={logo} width="45px" className="mr-4" />
+                    <Typography
+                        variant="h6"
+                        noWrap
+                        component="div"
+                        className="w-60 hidden md:block"
+                    >
+                        Code Warehouse
+                    </Typography>
+                    <div className="flex items-center w-full rounded-8 text-black">
+                        <form onSubmit={handleSearchSubmit}>
+                            <SearchInput
+                                startAdornment={
+                                    <InputAdornment position="start">
+                                        <SearchIcon className="ml-2" />
+                                    </InputAdornment>
+                                }
+                                placeholder="Search for a code snippet..."
+                                inputProps={{ "aria-label": "search" }}
+                                className="rounded-lg text-sm shadow"
+                                sx={{
+                                    backgroundColor:
+                                        theme.palette.background.main,
+                                }}
+                                type="text"
+                                value={searchKeyword}
+                                onChange={handleSearchChange}
+                            />
+                        </form>
+                    </div>
+                    <Box sx={{ flexGrow: 1 }} />
+                    <IconButton
+                        aria-label="add"
+                        color="background"
+                        onClick={() => history.push("/new-snippet")}
+                    >
+                        <AddIcon />
+                    </IconButton>
+                </Toolbar>
+            </AppBar>
             <div className="flex flex-row w-full">
                 <Box
                     component="nav"
@@ -242,7 +251,7 @@ export default function CodeWarehouseApp() {
                                         }
                                     >
                                         <ListItemIcon>
-                                            <SourceIcon />
+                                            <SourceIcon color="primary" />
                                         </ListItemIcon>
                                         <ListItemText primary={text} />
                                     </ListItem>
