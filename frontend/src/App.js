@@ -20,7 +20,9 @@ import List from "@mui/material/List";
 import Chip from "@mui/material/Chip";
 import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import Tooltip from "@mui/material/Tooltip";
+
 const drawerWidth = 260;
 
 const SearchInput = styled(InputBase)(({ theme }) => ({
@@ -61,8 +63,6 @@ function CodeSnippetCard(props) {
 }
 
 export default function CodeWarehouseApp() {
-    const navigate = useNavigate();
-
     // the incoming data from backend (all code snippets)
     const [codeSnippets, setCodeSnippets] = useState(null);
 
@@ -187,14 +187,16 @@ export default function CodeWarehouseApp() {
                         </form>
                     </div>
                     <Box sx={{ flexGrow: 1 }} />
-                    <IconButton
-                        aria-label="add"
-                        color="background"
-                        component={Link}
-                        to="/new-snippet"
-                    >
-                        <AddIcon />
-                    </IconButton>
+                    <Tooltip arrow title="Create a new snippet">
+                        <IconButton
+                            aria-label="create a new snippet"
+                            color="background"
+                            component={Link}
+                            to="/new-snippet"
+                        >
+                            <AddIcon />
+                        </IconButton>
+                    </Tooltip>
                 </Toolbar>
             </AppBar>
             <div className="flex flex-row w-full">
