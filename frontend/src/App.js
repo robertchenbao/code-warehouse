@@ -20,7 +20,7 @@ import List from "@mui/material/List";
 import Chip from "@mui/material/Chip";
 import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const drawerWidth = 260;
 
 const SearchInput = styled(InputBase)(({ theme }) => ({
@@ -61,7 +61,7 @@ function CodeSnippetCard(props) {
 }
 
 export default function CodeWarehouseApp() {
-    const history = useNavigate();
+    const navigate = useNavigate();
 
     // the incoming data from backend (all code snippets)
     const [codeSnippets, setCodeSnippets] = useState(null);
@@ -85,13 +85,15 @@ export default function CodeWarehouseApp() {
     function displayContent() {
         if (!codeSnippets) {
             return (
-                <div>
-                    <h1 className="text-center text-xl py-60">
-                        Search for a code snippet from the menu above.
-                        <br />
-                        (For example, try "React".)
-                    </h1>
-                </div>
+                <Typography
+                    variant="h5"
+                    component="div"
+                    className="text-center text-xl py-60"
+                >
+                    Search for a code snippet from the menu above.
+                    <br />
+                    (For example, try "React".)
+                </Typography>
             );
         } else if (codeSnippets.length === 0) {
             return (
@@ -154,7 +156,7 @@ export default function CodeWarehouseApp() {
         >
             <AppBar position="fixed">
                 <Toolbar>
-                    <img src={logo} width="45px" className="mr-4" />
+                    <img src={logo} alt="logo" width="45px" className="mr-4" />
                     <Typography
                         variant="h6"
                         noWrap
@@ -188,7 +190,8 @@ export default function CodeWarehouseApp() {
                     <IconButton
                         aria-label="add"
                         color="background"
-                        onClick={() => history.push("/new-snippet")}
+                        component={Link}
+                        to="/new-snippet"
                     >
                         <AddIcon />
                     </IconButton>
