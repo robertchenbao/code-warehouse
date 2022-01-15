@@ -1,6 +1,6 @@
 import { createTheme } from "@mui/material/styles";
 
-export const theme = createTheme({
+export const CodeWarehouseTheme = createTheme({
     palette: {
         primary: {
             main: "#30475e",

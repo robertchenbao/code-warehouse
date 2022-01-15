@@ -2,18 +2,23 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
-import { BrowserRouter } from "react-router-dom";
+import PostSnippet from "./PostSnippet";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ThemeProvider } from "@mui/material/styles";
+import { CodeWarehouseTheme } from "./theme";
 
 import reportWebVitals from "./reportWebVitals";
-import { ThemeProvider } from "@mui/material/styles";
-import { theme } from "./theme";
+
 ReactDOM.render(
     <React.StrictMode>
-        <BrowserRouter>
-            <ThemeProvider theme={theme}>
-                <App />
-            </ThemeProvider>
-        </BrowserRouter>
+        <ThemeProvider theme={CodeWarehouseTheme}>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<App />} />
+                    <Route path="new-snippet" element={<PostSnippet />} />
+                </Routes>
+            </BrowserRouter>
+        </ThemeProvider>
     </React.StrictMode>,
     document.getElementById("root")
 );
