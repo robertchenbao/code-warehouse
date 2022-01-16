@@ -20,9 +20,11 @@ import List from "@mui/material/List";
 import Chip from "@mui/material/Chip";
 import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
-import { Link } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import Tooltip from "@mui/material/Tooltip";
-
+import Button from "@mui/material/Button";
+import DialogTitle from "@mui/material/DialogTitle";
+import Dialog from "@mui/material/Dialog";
 const drawerWidth = 260;
 
 const SearchInput = styled(InputBase)(({ theme }) => ({
@@ -59,6 +61,21 @@ function CodeSnippetCard(props) {
                 />
             </CardContent>
         </Card>
+    );
+}
+
+function PostDialog(props) {
+    const { onClose, open } = props;
+
+    const handleClose = () => {
+        onClose(selectedValue);
+    };
+
+    return (
+        <Dialog onClose={handleClose} open={open}>
+            <DialogTitle component="h3">Post a new snippet</DialogTitle>
+            Hey
+        </Dialog>
     );
 }
 
@@ -144,6 +161,17 @@ export default function CodeWarehouseApp() {
         console.log(event.target.value);
     }
 
+    // dialog open/close
+    const [open, setOpen] = React.useState(false);
+
+    const handleOpenPostDialog = () => {
+        setOpen(true);
+    };
+
+    const handleClosePostDialog = (value) => {
+        setOpen(false);
+    };
+
     return (
         <Box
             sx={{
@@ -188,15 +216,17 @@ export default function CodeWarehouseApp() {
                     </div>
                     <Box sx={{ flexGrow: 1 }} />
                     <Tooltip arrow title="Create a new snippet">
-                        <IconButton
+                        <Button
+                            variant="contained"
+                            color="secondary"
                             aria-label="create a new snippet"
-                            color="background"
-                            component={Link}
-                            to="/new-snippet"
+                            onClick={handleOpenPostDialog}
+                            startIcon={<AddIcon />}
                         >
-                            <AddIcon />
-                        </IconButton>
+                            POST
+                        </Button>
                     </Tooltip>
+                    <PostDialog open={open} onClose={handleClosePostDialog} />
                 </Toolbar>
             </AppBar>
             <div className="flex flex-row w-full">
