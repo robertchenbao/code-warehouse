@@ -13,6 +13,10 @@ export const CodeWarehouseTheme = createTheme({
         },
     },
     typography: {
+        h4: {
+            fontFamily: "Roboto Slab",
+            fontWeight: 300,
+        },
         h6: {
             fontFamily: "Roboto Slab",
         },

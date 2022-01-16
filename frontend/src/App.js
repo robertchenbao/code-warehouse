@@ -8,6 +8,7 @@ import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
+import CardActions from "@mui/material/CardActions";
 import logo from "./logo.svg"; // Tell webpack this JS file uses this image
 import Drawer from "@mui/material/Drawer";
 import { useTheme } from "@mui/material/styles";
@@ -18,13 +19,14 @@ import ListItemText from "@mui/material/ListItemText";
 import SourceIcon from "@mui/icons-material/Source";
 import List from "@mui/material/List";
 import Chip from "@mui/material/Chip";
-import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
 import { useSearchParams } from "react-router-dom";
 import Tooltip from "@mui/material/Tooltip";
 import Button from "@mui/material/Button";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
+import Divider from "@mui/material/Divider";
+
 const drawerWidth = 260;
 
 const SearchInput = styled(InputBase)(({ theme }) => ({
@@ -45,17 +47,33 @@ function CodeSnippetCard(props) {
     const title = props.title;
     const content = props.content;
     const category = props.category;
+    const pub_date = props.pub_date;
     return (
-        <Card className="my-6 mx-6 h-96" elevation={2} sx={{ borderRadius: 3 }}>
-            <CardContent className="flex content-between flex-col">
+        <Card
+            className="flex flex-col flex-1 my-4 mx-4 min-h-64"
+            elevation={2}
+            sx={{ borderRadius: 2 }}
+        >
+            <CardContent className="flex content-between flex-col mb-4">
                 <Typography variant="h4">{title}</Typography>
                 <Typography variant="body1">{content}</Typography>
-                <Chip
-                    label={category}
-                    color="secondary"
-                    className="w-16 mt-4"
-                />
             </CardContent>
+            <Divider />
+            <CardActions className="flex justify-between mt-auto m-2">
+                <div className="flex flex-row items-center">
+                    <Typography variant="body1" className="pr-4">
+                        Language/Framework:
+                    </Typography>
+                    <Chip
+                        label={category}
+                        color="secondary"
+                        className="w-12 h-4"
+                    />
+                </div>
+                <Typography variant="body1">
+                    Posted on {new Date(pub_date).toLocaleString()}
+                </Typography>
+            </CardActions>
         </Card>
     );
 }
@@ -126,6 +144,7 @@ export default function CodeWarehouseApp() {
                             title={record.title}
                             content={record.content}
                             category={record.category}
+                            pub_date={record.pub_date}
                         />
                     ))}
                 </div>
