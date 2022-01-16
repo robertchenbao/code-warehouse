@@ -23,8 +23,10 @@ import AddIcon from "@mui/icons-material/Add";
 import Tooltip from "@mui/material/Tooltip";
 import Button from "@mui/material/Button";
 import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
 import Dialog from "@mui/material/Dialog";
 import Divider from "@mui/material/Divider";
+import TextField from "@mui/material/TextField";
 
 const drawerWidth = 260;
 
@@ -87,10 +89,35 @@ function PostDialog(props) {
         onClose(0);
     };
 
+    const [snippetDraft, setsnippetDraft] = React.useState();
+
+    const handleDraftChange = (event) => {
+        setsnippetDraft(event.target.value);
+    };
+
     return (
-        <Dialog onClose={handleClose} open={open}>
-            <DialogTitle component="h3">Post a new snippet</DialogTitle>
-            Hey
+        <Dialog
+            onClose={handleClose}
+            open={open}
+            className="h-128 w-128"
+            aria-label="post dialog"
+        >
+            <DialogTitle component="h3">Create a new snippet</DialogTitle>
+            <DialogContent>
+                Share your code snippet with people, helping them with coding
+                problems!
+            </DialogContent>
+            <DialogContent>
+                <TextField
+                    id="multiline-post-editor"
+                    label="Snippet Draft"
+                    multiline
+                    className="w-full"
+                    rows={16}
+                    value={snippetDraft}
+                    onChange={handleDraftChange}
+                />
+            </DialogContent>
         </Dialog>
     );
 }
@@ -99,7 +126,7 @@ export default function CodeWarehouseApp() {
     const theme = useTheme();
 
     // dialog open/close
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(true);
 
     const handleOpenDialog = () => {
         setOpen(true);
