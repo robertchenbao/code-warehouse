@@ -20,7 +20,6 @@ import SourceIcon from "@mui/icons-material/Source";
 import List from "@mui/material/List";
 import Chip from "@mui/material/Chip";
 import AddIcon from "@mui/icons-material/Add";
-import { useSearchParams } from "react-router-dom";
 import Tooltip from "@mui/material/Tooltip";
 import Button from "@mui/material/Button";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -44,10 +43,12 @@ const SearchInput = styled(InputBase)(({ theme }) => ({
 Display the code snippets in tiles/cards
 */
 function CodeSnippetCard(props) {
+    // info from the code snippet data
     const title = props.title;
     const content = props.content;
     const category = props.category;
     const pub_date = props.pub_date;
+
     return (
         <Card
             className="flex flex-col flex-1 my-4 mx-4 min-h-64"
@@ -78,6 +79,7 @@ function CodeSnippetCard(props) {
     );
 }
 
+// dialog for posting new snippets
 function PostDialog(props) {
     const { onClose, open } = props;
 
@@ -94,23 +96,51 @@ function PostDialog(props) {
 }
 
 export default function CodeWarehouseApp() {
+    const theme = useTheme();
+
+    // dialog open/close
+    const [open, setOpen] = React.useState(false);
+
+    const handleOpenDialog = () => {
+        setOpen(true);
+    };
+
+    const handleCloseDialog = () => {
+        setOpen(false);
+    };
+
     // the incoming data from backend (all code snippets)
     const [codeSnippets, setCodeSnippets] = useState(null);
 
     // the search keyword -- from user search input
-    const [searchKeyword, setSearchKeyword] = useSearchParams();
+    const [searchKeyword, setSearchKeyword] = useState("");
 
     // the index of the side bar item; manage which item to be highlighted
     const [selectedIndex, setSelectedIndex] = React.useState();
 
-    function handleSidebarItemClick(ev, searchKeyword, index) {
-        setSelectedIndex(index);
-        console.log("searchKeyword: " + searchKeyword);
-        ev.preventDefault();
-        // TODO: Add backend call to get search rsults
+    // shared function, for snippet searching
+    async function searchForKeyword(searchURL) {
+        // get the data from URL
+        const response = await fetch(searchURL, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        // save the data
+        const data = await response.json();
+        setCodeSnippets(data);
     }
-    const theme = useTheme();
-    // Function for fetching data from forecasts api using location data from another endpoint
+
+    function handleSidebarItemClick(event, category, index) {
+        setSelectedIndex(index); // set the selected index
+        setSearchKeyword(category);
+
+        // start the search
+        const searchURL = `http://127.0.0.1:8000/api/read/snippet/?keyword=${category}/`;
+        searchForKeyword(searchURL);
+        event.preventDefault();
+    }
 
     // display the results on frontend
     function displayContent() {
@@ -128,16 +158,18 @@ export default function CodeWarehouseApp() {
             );
         } else if (codeSnippets.length === 0) {
             return (
-                <div>
-                    <h1 className="text-center text-xl py-60">
-                        No result found!
-                    </h1>
-                </div>
+                <Typography
+                    variant="h5"
+                    component="div"
+                    className="text-center text-xl py-60"
+                >
+                    No result found!
+                </Typography>
             );
         } else {
             return (
                 <div className="flex justify-center flex-col overflow-auto">
-                    {/* TODO: Build real code snippet card*/}
+                    {/* TODO: Display results in code snippet card*/}
                     {codeSnippets.map((record, index) => (
                         <CodeSnippetCard
                             key={index}
@@ -154,43 +186,16 @@ export default function CodeWarehouseApp() {
 
     // submit the search form
     function handleSearchSubmit(event) {
-        const forecastUrl = `http://127.0.0.1:8000/api/read/snippet/?${searchKeyword}/`;
-        fetch(forecastUrl, {
-            // posts the form to users/me/items. You need to login to be able to send this
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                setCodeSnippets(data);
-                console.log(data);
-            });
+        console.log("RUNNING handleSearchSubmit");
+        const searchURL = `http://127.0.0.1:8000/api/read/snippet/?keyword=${searchKeyword}/`;
+        searchForKeyword(searchURL);
         event.preventDefault();
     }
 
     // handle search value change -- update the current state if needed
     function handleSearchChange(event) {
-        let keyword = event.target.value;
-        if (keyword) {
-            setSearchKeyword({ keyword });
-        } else {
-            setSearchKeyword({});
-        }
-        console.log(keyword);
+        setSearchKeyword(event.target.value);
     }
-
-    // dialog open/close
-    const [open, setOpen] = React.useState(false);
-
-    const handleOpenPostDialog = () => {
-        setOpen(true);
-    };
-
-    const handleClosePostDialog = (value) => {
-        setOpen(false);
-    };
 
     return (
         <Box
@@ -229,7 +234,7 @@ export default function CodeWarehouseApp() {
                                         theme.palette.background.main,
                                 }}
                                 type="text"
-                                value={searchKeyword.get("keyword") || ""}
+                                value={searchKeyword}
                                 onChange={handleSearchChange}
                             />
                         </form>
@@ -240,13 +245,13 @@ export default function CodeWarehouseApp() {
                             variant="contained"
                             color="secondary"
                             aria-label="create a new snippet"
-                            onClick={handleOpenPostDialog}
+                            onClick={handleOpenDialog}
                             startIcon={<AddIcon />}
                         >
                             POST
                         </Button>
                     </Tooltip>
-                    <PostDialog open={open} onClose={handleClosePostDialog} />
+                    <PostDialog open={open} onClose={handleCloseDialog} />
                 </Toolbar>
             </AppBar>
             <div className="flex flex-row w-full">
@@ -278,7 +283,7 @@ export default function CodeWarehouseApp() {
                             <List>
                                 {[
                                     "Python",
-                                    "JavaScript",
+                                    "JS",
                                     "Java",
                                     "C++",
                                     "Go",
