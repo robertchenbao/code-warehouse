@@ -46,11 +46,7 @@ function CodeSnippetCard(props) {
     const content = props.content;
     const category = props.category;
     return (
-        <Card
-            className="my-6 mx-6 h-128"
-            elevation={2}
-            sx={{ borderRadius: 3 }}
-        >
+        <Card className="my-6 mx-6 h-96" elevation={2} sx={{ borderRadius: 3 }}>
             <CardContent className="flex content-between flex-col">
                 <Typography variant="h4">{title}</Typography>
                 <Typography variant="body1">{content}</Typography>
@@ -68,7 +64,7 @@ function PostDialog(props) {
     const { onClose, open } = props;
 
     const handleClose = () => {
-        onClose(selectedValue);
+        onClose(0);
     };
 
     return (
@@ -84,7 +80,7 @@ export default function CodeWarehouseApp() {
     const [codeSnippets, setCodeSnippets] = useState(null);
 
     // the search keyword -- from user search input
-    const [searchKeyword, setSearchKeyword] = useState("");
+    const [searchKeyword, setSearchKeyword] = useSearchParams();
 
     // the index of the side bar item; manage which item to be highlighted
     const [selectedIndex, setSelectedIndex] = React.useState();
@@ -139,7 +135,7 @@ export default function CodeWarehouseApp() {
 
     // submit the search form
     function handleSearchSubmit(event) {
-        const forecastUrl = `http://127.0.0.1:8000/api/read/snippet/?keyword=${searchKeyword}/`;
+        const forecastUrl = `http://127.0.0.1:8000/api/read/snippet/?${searchKeyword}/`;
         fetch(forecastUrl, {
             // posts the form to users/me/items. You need to login to be able to send this
             method: "GET",
@@ -157,8 +153,13 @@ export default function CodeWarehouseApp() {
 
     // handle search value change -- update the current state if needed
     function handleSearchChange(event) {
-        setSearchKeyword(event.target.value);
-        console.log(event.target.value);
+        let keyword = event.target.value;
+        if (keyword) {
+            setSearchKeyword({ keyword });
+        } else {
+            setSearchKeyword({});
+        }
+        console.log(keyword);
     }
 
     // dialog open/close
@@ -209,7 +210,7 @@ export default function CodeWarehouseApp() {
                                         theme.palette.background.main,
                                 }}
                                 type="text"
-                                value={searchKeyword}
+                                value={searchKeyword.get("keyword") || ""}
                                 onChange={handleSearchChange}
                             />
                         </form>
