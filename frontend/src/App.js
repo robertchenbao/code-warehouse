@@ -27,6 +27,10 @@ import DialogContent from "@mui/material/DialogContent";
 import Dialog from "@mui/material/Dialog";
 import Divider from "@mui/material/Divider";
 import TextField from "@mui/material/TextField";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
 
 const drawerWidth = 260;
 
@@ -85,6 +89,12 @@ function CodeSnippetCard(props) {
 function PostDialog(props) {
     const { onClose, open } = props;
 
+    const [snippetCategory, setSnippetCategory] = useState(10);
+
+    const handleSnippetCategoryChange = (event) => {
+        setSnippetCategory(event.target.value);
+    };
+
     const handleClose = () => {
         onClose(0);
     };
@@ -107,9 +117,36 @@ function PostDialog(props) {
                 Share your code snippet with people, helping them with coding
                 problems!
             </DialogContent>
+
             <DialogContent>
+                <div className="flex flex-row justify-between">
+                    <TextField
+                        id="snippet-title-editor"
+                        label="Title"
+                        className="w-2/3"
+                        sx={{ marginBottom: "8px" }}
+                        // value={snippetDraft}
+                        // onChange={handleDraftChange}
+                    />
+                    <FormControl className="w-1/4" sx={{ marginBottom: "8px" }}>
+                        <InputLabel id="snippet-category-select-label">
+                            Category
+                        </InputLabel>
+                        <Select
+                            labelId="snippet-category-select-label"
+                            id="snippet-category-select"
+                            label="Category"
+                            value={snippetCategory}
+                            onChange={handleSnippetCategoryChange}
+                        >
+                            <MenuItem value={10}>Ten</MenuItem>
+                            <MenuItem value={20}>Twenty</MenuItem>
+                            <MenuItem value={30}>Thirty</MenuItem>
+                        </Select>
+                    </FormControl>
+                </div>
                 <TextField
-                    id="multiline-post-editor"
+                    id="snippet-content-editor"
                     label="Snippet Draft"
                     multiline
                     className="w-full"
