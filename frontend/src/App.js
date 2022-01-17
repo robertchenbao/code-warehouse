@@ -31,6 +31,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
+import { useFormik } from "formik";
 
 const drawerWidth = 260;
 
@@ -89,20 +90,14 @@ function CodeSnippetCard(props) {
 function PostDialog(props) {
     const { onClose, open } = props;
 
-    const [snippetCategory, setSnippetCategory] = useState(10);
-
-    const handleSnippetCategoryChange = (event) => {
-        setSnippetCategory(event.target.value);
-    };
+    const postForm = useFormik({
+        onSubmit: (values) => {
+            alert(JSON.stringify(values, null, 2));
+        },
+    });
 
     const handleClose = () => {
         onClose(0);
-    };
-
-    const [snippetDraft, setsnippetDraft] = React.useState();
-
-    const handleDraftChange = (event) => {
-        setsnippetDraft(event.target.value);
     };
 
     return (
@@ -119,41 +114,46 @@ function PostDialog(props) {
             </DialogContent>
 
             <DialogContent>
-                <div className="flex flex-row justify-between">
-                    <TextField
-                        id="snippet-title-editor"
-                        label="Title"
-                        className="w-2/3"
-                        sx={{ marginBottom: "8px" }}
-                        // value={snippetDraft}
-                        // onChange={handleDraftChange}
-                    />
-                    <FormControl className="w-1/4" sx={{ marginBottom: "8px" }}>
-                        <InputLabel id="snippet-category-select-label">
-                            Category
-                        </InputLabel>
-                        <Select
-                            labelId="snippet-category-select-label"
-                            id="snippet-category-select"
-                            label="Category"
-                            value={snippetCategory}
-                            onChange={handleSnippetCategoryChange}
+                <form onSubmit={postForm.handleSubmit}>
+                    <div className="flex flex-row justify-between">
+                        <TextField
+                            id="snippet-title-editor"
+                            label="Title"
+                            className="w-2/3"
+                            sx={{ marginBottom: "8px" }}
+                            value={postForm.values.snippetDraft}
+                            onChange={postForm.handleChange}
+                        />
+                        <FormControl
+                            className="w-1/4"
+                            sx={{ marginBottom: "8px" }}
                         >
-                            <MenuItem value={10}>Ten</MenuItem>
-                            <MenuItem value={20}>Twenty</MenuItem>
-                            <MenuItem value={30}>Thirty</MenuItem>
-                        </Select>
-                    </FormControl>
-                </div>
-                <TextField
-                    id="snippet-content-editor"
-                    label="Snippet Draft"
-                    multiline
-                    className="w-full"
-                    rows={16}
-                    value={snippetDraft}
-                    onChange={handleDraftChange}
-                />
+                            <InputLabel id="snippet-category-select-label">
+                                Category
+                            </InputLabel>
+                            <Select
+                                labelId="snippet-category-select-label"
+                                id="snippet-category-select"
+                                label="Category"
+                                value={postForm.values.snippetCategory}
+                                onChange={postForm.handleChange}
+                            >
+                                <MenuItem value={10}>Ten</MenuItem>
+                                <MenuItem value={20}>Twenty</MenuItem>
+                                <MenuItem value={30}>Thirty</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </div>
+                    <TextField
+                        id="snippet-content-editor"
+                        label="Snippet Draft"
+                        multiline
+                        className="w-full"
+                        rows={16}
+                        value={postForm.values.snippetDraft}
+                        onChange={postForm.handleChange}
+                    />
+                </form>
             </DialogContent>
         </Dialog>
     );
