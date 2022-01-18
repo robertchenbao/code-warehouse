@@ -24,6 +24,8 @@ import Tooltip from "@mui/material/Tooltip";
 import Button from "@mui/material/Button";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+
 import Dialog from "@mui/material/Dialog";
 import Divider from "@mui/material/Divider";
 import TextField from "@mui/material/TextField";
@@ -91,6 +93,11 @@ function PostDialog(props) {
     const { onClose, open } = props;
 
     const postForm = useFormik({
+        initialValues: {
+            snippetTitle: "",
+            snippetCategory: 10,
+            snippetDraft: "",
+        },
         onSubmit: (values) => {
             alert(JSON.stringify(values, null, 2));
         },
@@ -109,20 +116,20 @@ function PostDialog(props) {
         >
             <DialogTitle component="h3">Create a new snippet</DialogTitle>
             <DialogContent>
-                Share your code snippet with people, helping them with coding
-                problems!
+                Share your code snippet with people, helping them with
+                programming questions!
             </DialogContent>
 
             <DialogContent>
                 <form onSubmit={postForm.handleSubmit}>
                     <div className="flex flex-row justify-between">
                         <TextField
-                            id="snippet-title-editor"
+                            id="snippetTitle"
                             label="Title"
                             className="w-2/3"
                             sx={{ marginBottom: "8px" }}
-                            value={postForm.values.snippetDraft}
                             onChange={postForm.handleChange}
+                            value={postForm.values.snippetTitle}
                         />
                         <FormControl
                             className="w-1/4"
@@ -133,10 +140,10 @@ function PostDialog(props) {
                             </InputLabel>
                             <Select
                                 labelId="snippet-category-select-label"
-                                id="snippet-category-select"
+                                id="snippetCategory"
                                 label="Category"
-                                value={postForm.values.snippetCategory}
                                 onChange={postForm.handleChange}
+                                value={postForm.values.snippetCategory}
                             >
                                 <MenuItem value={10}>Ten</MenuItem>
                                 <MenuItem value={20}>Twenty</MenuItem>
@@ -145,14 +152,17 @@ function PostDialog(props) {
                         </FormControl>
                     </div>
                     <TextField
-                        id="snippet-content-editor"
+                        id="snippetDraft"
                         label="Snippet Draft"
                         multiline
                         className="w-full"
                         rows={16}
-                        value={postForm.values.snippetDraft}
                         onChange={postForm.handleChange}
+                        value={postForm.values.snippetDraft}
                     />
+                    <DialogActions>
+                        <Button type="submit">Submit</Button>
+                    </DialogActions>
                 </form>
             </DialogContent>
         </Dialog>
