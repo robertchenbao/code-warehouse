@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
-import PostSnippet from "./PostSnippet";
+import Profile from "./Profile";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import { CodeWarehouseTheme } from "./theme";
@@ -15,7 +15,7 @@ ReactDOM.render(
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<App />} />
-                    <Route path="new-snippet" element={<PostSnippet />} />
+                    <Route path="profile" element={<Profile />} />
                 </Routes>
             </BrowserRouter>
         </ThemeProvider>
