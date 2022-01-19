@@ -29,14 +29,12 @@ import DialogActions from "@mui/material/DialogActions";
 import Dialog from "@mui/material/Dialog";
 import Divider from "@mui/material/Divider";
 import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
 import { useFormik } from "formik";
 import { languages } from "./languages";
 import Autocomplete from "@mui/material/Autocomplete";
 import IconButton from "@mui/material/IconButton";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import Menu from "@mui/material/Menu";
-import { useNavigate } from "react-router-dom";
+import AccountMenu from "./AccountMenu";
+import PostDialog from "./PostDialog";
 
 const drawerWidth = 260;
 
@@ -91,119 +89,8 @@ function CodeSnippetCard(props) {
     );
 }
 
-// dialog for posting new snippets
-function PostDialog(props) {
-    const { onClose, open } = props;
-
-    const postForm = useFormik({
-        initialValues: {
-            // TODO: actually set author ID
-            author: 1,
-            pub_date: new Date().toISOString(),
-            title: "",
-            category: "Python",
-            content: "",
-        },
-        onSubmit: async (values) => {
-            // alert(JSON.stringify(values, null, 2));
-            const postURL = "http://127.0.0.1:8000/api/create/snippet/";
-            const response = await fetch(postURL, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(values),
-            });
-            const data = await response.json();
-        },
-    });
-
-    const handleClose = () => {
-        onClose(0);
-    };
-
-    const handleCancel = () => {
-        console.log("cancel is clicked::");
-        handleClose();
-    };
-    const handleFormSubmit = () => {
-        postForm.handleSubmit();
-        handleClose();
-    };
-
-    return (
-        <Dialog
-            onClose={handleClose}
-            open={open}
-            className="h-128 w-128"
-            aria-label="post dialog"
-        >
-            <DialogTitle component="h3">Create a new snippet</DialogTitle>
-            <DialogContent>
-                Share your code snippet with people, helping them with
-                programming questions!
-            </DialogContent>
-
-            <DialogContent>
-                <form onSubmit={handleFormSubmit}>
-                    <div className="flex flex-row justify-between">
-                        <TextField
-                            id="title"
-                            label="Title"
-                            className="w-7/12"
-                            sx={{ marginBottom: "8px" }}
-                            onChange={postForm.handleChange}
-                            value={postForm.values.title}
-                        />
-                        <Autocomplete
-                            disablePortal
-                            id="category"
-                            options={languages}
-                            className="w-4/12"
-                            sx={{ marginBottom: "8px" }}
-                            onChange={(e, value) =>
-                                postForm.setFieldValue("category", value)
-                            }
-                            value={postForm.values.category}
-                            renderInput={(params) => (
-                                <TextField {...params} label="Category" />
-                            )}
-                        />
-                    </div>
-                    <TextField
-                        id="content"
-                        label="Snippet Draft"
-                        multiline
-                        className="w-full"
-                        rows={16}
-                        onChange={postForm.handleChange}
-                        value={postForm.values.content}
-                    />
-                    <DialogActions>
-                        <Button
-                            onClick={handleCancel}
-                            color="primary"
-                            variant="contained"
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            color="secondary"
-                        >
-                            Submit
-                        </Button>
-                    </DialogActions>
-                </form>
-            </DialogContent>
-        </Dialog>
-    );
-}
-
 export default function CodeWarehouseApp() {
     const theme = useTheme();
-    const navigate = useNavigate();
 
     // dialog open/close
     const [open, setOpen] = React.useState(true);
@@ -304,27 +191,6 @@ export default function CodeWarehouseApp() {
         setSearchKeyword(event.target.value);
     }
 
-    // control the account circle component
-    const [auth, setAuth] = React.useState(true);
-    const [anchorEl, setAnchorEl] = React.useState(null);
-
-    const handleChange = (event) => {
-        setAuth(event.target.checked);
-    };
-
-    const handleMenu = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-    const handleProfileClick = () => {
-        // navigate to profile page
-        navigate("/profile");
-    };
-
     return (
         <Box
             sx={{
@@ -368,55 +234,8 @@ export default function CodeWarehouseApp() {
                         </form>
                     </div>
                     <Box sx={{ flexGrow: 1 }} />
-                    <Tooltip arrow title="Create a new snippet">
-                        <IconButton
-                            variant="contained"
-                            color="inherit"
-                            size="large"
-                            aria-label="create a new snippet"
-                            onClick={handleOpenDialog}
-                        >
-                            <AddIcon />
-                        </IconButton>
-                    </Tooltip>
-                    <PostDialog open={open} onClose={handleCloseDialog} />
-
-                    {auth && (
-                        <div>
-                            <IconButton
-                                size="large"
-                                aria-label="account of current user"
-                                aria-controls="menu-appbar"
-                                aria-haspopup="true"
-                                onClick={handleMenu}
-                                color="inherit"
-                            >
-                                <AccountCircle />
-                            </IconButton>
-                            <Menu
-                                id="menu-appbar"
-                                anchorEl={anchorEl}
-                                anchorOrigin={{
-                                    vertical: "bottom",
-                                    horizontal: "right",
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: "top",
-                                    horizontal: "right",
-                                }}
-                                open={Boolean(anchorEl)}
-                                onClose={handleClose}
-                            >
-                                <MenuItem onClick={handleProfileClick}>
-                                    Profile
-                                </MenuItem>
-                                <MenuItem onClick={handleClose}>
-                                    My account
-                                </MenuItem>
-                            </Menu>
-                        </div>
-                    )}
+                    {/* AccountMenu */}
+                    <AccountMenu />
                 </Toolbar>
             </AppBar>
             <div className="flex flex-row w-full">
