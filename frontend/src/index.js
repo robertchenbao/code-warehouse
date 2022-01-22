@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import Profile from "./Profile";
+import SignupPage from "./SignupPage";
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import { CodeWarehouseTheme } from "./theme";
@@ -16,6 +18,7 @@ ReactDOM.render(
                 <Routes>
                     <Route path="/" element={<App />} />
                     <Route path="profile" element={<Profile />} />
+                    <Route path="signup" element={<SignupPage />} />
                 </Routes>
             </BrowserRouter>
         </ThemeProvider>
