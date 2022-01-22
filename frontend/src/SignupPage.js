@@ -15,20 +15,29 @@ import Toolbar from "@mui/material/Toolbar";
 function SignupPage() {
     const form = useFormik({
         initialValues: {
-            name: "",
+            username: "",
             email: "",
             password: "",
             passwordConfirm: "",
-            acceptTermsConditions: false,
         },
         onSubmit: async (values) => {
-            alert(JSON.stringify(values, null, 2));
+            const { passwordConfirm, ...backendInput } = values;
+            alert(JSON.stringify(backendInput, null, 2));
+            // post the data to backend
+
+            const postURL = "http://127.0.0.1:8000/api/create/user/";
+            const response = await fetch(postURL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(backendInput),
+            });
+            if (response.ok) {
+                alert("User created");
+            }
         },
     });
-
-    function handleSubmit(ev) {
-        ev.preventDefault();
-    }
 
     return (
         <div className="flex flex-col flex-auto flex-shrink-0 p-24 md:flex-row md:p-0">
@@ -59,16 +68,16 @@ function SignupPage() {
                     <form
                         name="registerForm"
                         noValidate
-                        className="flex flex-col justify-center w-full px-8"
-                        onSubmit={handleSubmit}
+                        className="flex flex-col justify-center w-full px-8 pb-12"
+                        onSubmit={form.handleSubmit}
                     >
                         <TextField
                             sx={{ marginBottom: "16px" }}
-                            label="Name"
+                            label="Username"
                             autoFocus
-                            type="name"
-                            name="name"
-                            value={form.name}
+                            type="username"
+                            name="username"
+                            value={form.username}
                             onChange={form.handleChange}
                             variant="outlined"
                             required
@@ -110,22 +119,6 @@ function SignupPage() {
                             required
                             fullWidth
                         />
-
-                        <FormControl
-                            className="items-center"
-                            sx={{ marginBottom: "4px" }}
-                        >
-                            <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        name="acceptTermsConditions"
-                                        checked={form.acceptTermsConditions}
-                                        onChange={form.handleChange}
-                                    />
-                                }
-                                label="I read and accept terms and conditions"
-                            />
-                        </FormControl>
 
                         <Button
                             variant="contained"
