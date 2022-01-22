@@ -10,8 +10,11 @@ import { useFormik } from "formik";
 import { languages } from "./languages";
 import Autocomplete from "@mui/material/Autocomplete";
 
+import { useNavigate } from "react-router-dom";
+
 export default function PostDialog(props) {
     const { onClose, open } = props;
+    const navigate = useNavigate();
 
     const postForm = useFormik({
         initialValues: {
@@ -32,7 +35,10 @@ export default function PostDialog(props) {
                 },
                 body: JSON.stringify(values),
             });
-            const data = await response.json();
+            if (response.ok) {
+                handleCloseDialog();
+                navigate("/");
+            }
         },
     });
 
@@ -42,10 +48,6 @@ export default function PostDialog(props) {
 
     const handleCancel = () => {
         console.log("cancel is clicked::");
-        handleCloseDialog();
-    };
-    const handleFormSubmit = () => {
-        postForm.handleSubmit();
         handleCloseDialog();
     };
 
@@ -63,7 +65,7 @@ export default function PostDialog(props) {
             </DialogContent>
 
             <DialogContent>
-                <form onSubmit={handleFormSubmit}>
+                <form onSubmit={postForm.handleSubmit}>
                     <div className="flex flex-row justify-between">
                         <TextField
                             id="title"
