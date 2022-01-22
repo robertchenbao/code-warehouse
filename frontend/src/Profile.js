@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import logo from "./logo.svg"; // Tell webpack this JS file uses this image
 import { useTheme } from "@mui/material/styles";
 import AccountMenu from "./AccountMenu";
+import { Link } from "react-router-dom";
 
 export default function Profile() {
     const theme = useTheme();
@@ -26,15 +27,25 @@ export default function Profile() {
         >
             <AppBar position="fixed">
                 <Toolbar>
-                    <img src={logo} alt="logo" width="45px" className="mr-4" />
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="div"
-                        className="w-60 hidden md:block"
+                    <Link
+                        to="/"
+                        className="flex flex-row items-center no-underline"
                     >
-                        Code Warehouse
-                    </Typography>
+                        <img
+                            src={logo}
+                            alt="logo"
+                            width="45px"
+                            className="mr-4"
+                        />
+                        <Typography
+                            variant="h6"
+                            noWrap
+                            component="div"
+                            className="w-60 hidden md:block"
+                        >
+                            Code Warehouse
+                        </Typography>
+                    </Link>
 
                     <Box sx={{ flexGrow: 1 }} />
 

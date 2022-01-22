@@ -19,22 +19,9 @@ import ListItemText from "@mui/material/ListItemText";
 import SourceIcon from "@mui/icons-material/Source";
 import List from "@mui/material/List";
 import Chip from "@mui/material/Chip";
-import AddIcon from "@mui/icons-material/Add";
-import Tooltip from "@mui/material/Tooltip";
-import Button from "@mui/material/Button";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
-
-import Dialog from "@mui/material/Dialog";
 import Divider from "@mui/material/Divider";
-import TextField from "@mui/material/TextField";
-import { useFormik } from "formik";
-import { languages } from "./languages";
-import Autocomplete from "@mui/material/Autocomplete";
-import IconButton from "@mui/material/IconButton";
 import AccountMenu from "./AccountMenu";
-import PostDialog from "./PostDialog";
+import { Link } from "react-router-dom";
 
 const drawerWidth = 260;
 
@@ -91,17 +78,6 @@ function CodeSnippetCard(props) {
 
 export default function CodeWarehouseApp() {
     const theme = useTheme();
-
-    // dialog open/close
-    const [open, setOpen] = React.useState(true);
-
-    const handleOpenDialog = () => {
-        setOpen(true);
-    };
-
-    const handleCloseDialog = () => {
-        setOpen(false);
-    };
 
     // the incoming data from backend (all code snippets)
     const [codeSnippets, setCodeSnippets] = useState(null);
@@ -203,15 +179,25 @@ export default function CodeWarehouseApp() {
         >
             <AppBar position="fixed">
                 <Toolbar>
-                    <img src={logo} alt="logo" width="45px" className="mr-4" />
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="div"
-                        className="w-60 hidden md:block"
+                    <Link
+                        to="/"
+                        className="flex flex-row items-center no-underline"
                     >
-                        Code Warehouse
-                    </Typography>
+                        <img
+                            src={logo}
+                            alt="logo"
+                            width="45px"
+                            className="mr-4"
+                        />
+                        <Typography
+                            variant="h6"
+                            noWrap
+                            component="div"
+                            className="w-60 hidden md:block"
+                        >
+                            Code Warehouse
+                        </Typography>
+                    </Link>
                     <div className="flex items-center w-full rounded-8 text-black">
                         <form onSubmit={handleSearchSubmit}>
                             <SearchInput
