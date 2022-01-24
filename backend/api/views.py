@@ -4,6 +4,7 @@ from .models import CodeSnippets, User
 from .serializers import CodeSnippetsSerializer, UsersSerializer
 from rest_framework.generics import ListAPIView, CreateAPIView
 from django.contrib.postgres.search import SearchVector
+from datetime import datetime
 
 
 class GetUsers(ListAPIView):
@@ -18,6 +19,12 @@ class AddUser(CreateAPIView):
 
 class AddCodeSnippet(CreateAPIView):
     queryset = CodeSnippets.objects.all()
+    serializer_class = CodeSnippetsSerializer
+
+
+class GetLatestTenSnippets(ListAPIView):
+    now_time = datetime.now()
+    queryset = CodeSnippets.objects.order_by('-pub_date')[:10][::-1]
     serializer_class = CodeSnippetsSerializer
 
 
