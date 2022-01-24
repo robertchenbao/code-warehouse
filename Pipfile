@@ -9,6 +9,7 @@ psycopg2 = "*"
 djangorestframework = "*"
 django-haystack = {extras = ["elasticsearch"], version = "*"}
 django-cors-headers = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 yapf = "*"
