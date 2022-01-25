@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -89,7 +89,9 @@ export default function CodeWarehouseApp() {
     const [selectedIndex, setSelectedIndex] = React.useState();
 
     // shared function, for snippet searching
-    async function searchForKeyword(searchURL) {
+    async function searchSnippets(keyword) {
+        const searchURL = `http://127.0.0.1:8000/api/read/snippet/?keyword=${keyword}/`;
+
         // get the data from URL
         const response = await fetch(searchURL, {
             method: "GET",
@@ -102,15 +104,33 @@ export default function CodeWarehouseApp() {
         setCodeSnippets(data);
     }
 
+    //
     function handleSidebarItemClick(event, category, index) {
         setSelectedIndex(index); // set the selected index
         setSearchKeyword(category);
 
         // start the search
-        const searchURL = `http://127.0.0.1:8000/api/read/snippet/?keyword=${category}/`;
-        searchForKeyword(searchURL);
+        searchSnippets(category);
         event.preventDefault();
     }
+
+    // display the latest snippets, when the page loads
+    useEffect(() => {
+        async function fetchLatestPosts() {
+            const latestURL = "http://127.0.0.1:8000/api/read/latest-snippets/";
+            // get the data from URL
+            const response = await fetch(latestURL, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            // save the data to react state
+            const data = await response.json();
+            setCodeSnippets(data);
+        }
+        fetchLatestPosts();
+    }, []);
 
     // display the results on frontend
     function displayContent() {
@@ -157,8 +177,7 @@ export default function CodeWarehouseApp() {
     // submit the search form
     function handleSearchSubmit(event) {
         console.log("RUNNING handleSearchSubmit");
-        const searchURL = `http://127.0.0.1:8000/api/read/snippet/?keyword=${searchKeyword}/`;
-        searchForKeyword(searchURL);
+        searchSnippets(searchKeyword);
         event.preventDefault();
     }
 
