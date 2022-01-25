@@ -1,9 +1,6 @@
 import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
+import Box from "@mui/material/Box";
 import CardContent from "@mui/material/CardContent";
-import Checkbox from "@mui/material/Checkbox";
-import FormControl from "@mui/material/FormControl";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import React from "react";
@@ -18,20 +15,19 @@ function SignupPage() {
             username: "",
             email: "",
             password: "",
-            passwordConfirm: "",
+            password2: "",
         },
         onSubmit: async (values) => {
-            const { passwordConfirm, ...backendInput } = values;
-            alert(JSON.stringify(backendInput, null, 2));
+            alert(JSON.stringify(values, null, 2));
             // post the data to backend
 
-            const postURL = "http://127.0.0.1:8000/api/create/user/";
+            const postURL = "http://127.0.0.1:8000/api/register/";
             const response = await fetch(postURL, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(backendInput),
+                body: JSON.stringify(values),
             });
             if (response.ok) {
                 alert("User created");
@@ -58,7 +54,7 @@ function SignupPage() {
                 </Typography>
             </div>
 
-            <Card className="w-full max-w-400 mx-auto m-16 md:m-0" square>
+            <Box className="w-full max-w-400 mx-auto m-16 md:m-0">
                 <Toolbar />
                 <CardContent className="flex flex-col items-center justify-center p-32 md:p-48 md:pt-128 ">
                     <Typography variant="h6" className="md:w-full p-8">
@@ -112,8 +108,8 @@ function SignupPage() {
                             sx={{ marginBottom: "16px" }}
                             label="Password (Confirm)"
                             type="password"
-                            name="passwordConfirm"
-                            value={form.passwordConfirm}
+                            name="password2"
+                            value={form.password2}
                             onChange={form.handleChange}
                             variant="outlined"
                             required
@@ -135,12 +131,12 @@ function SignupPage() {
                         <span className="font-medium">
                             Already have an account?
                         </span>
-                        <Link className="font-medium" to="/pages/auth/login-2">
+                        <Link className="font-medium" to="/login">
                             Login
                         </Link>
                     </div>
                 </CardContent>
-            </Card>
+            </Box>
         </div>
     );
 }

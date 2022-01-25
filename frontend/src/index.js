@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App";
 import Profile from "./Profile";
 import SignupPage from "./SignupPage";
+import LoginPage from "./LoginPage";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
@@ -19,6 +20,7 @@ ReactDOM.render(
                     <Route path="/" element={<App />} />
                     <Route path="profile" element={<Profile />} />
                     <Route path="signup" element={<SignupPage />} />
+                    <Route path="login" element={<LoginPage />} />
                 </Routes>
             </BrowserRouter>
         </ThemeProvider>
