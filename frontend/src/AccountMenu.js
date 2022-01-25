@@ -34,9 +34,8 @@ export default function AccountMenu() {
         navigate("/profile");
     };
 
-    // dialog control
-
-    const [open, setOpen] = React.useState(true);
+    // dialog open/close
+    const [open, setOpen] = React.useState(false);
 
     const handleOpenDialog = () => {
         setOpen(true);
