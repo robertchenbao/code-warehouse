@@ -15,33 +15,6 @@ const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-// const LoginNotification = (props) => {
-//     const { openNotification, setOpenNotification } = props;
-
-//     const handleClose = (event, reason) => {
-//         if (reason === "clickaway") {
-//             return;
-//         }
-
-//         setOpenNotification(false);
-//     };
-//     return (
-//         <Snackbar
-//             open={openNotification}
-//             autoHideDuration={6000}
-//             onClose={handleClose}
-//         >
-//             <Alert
-//                 onClose={handleClose}
-//                 severity="success"
-//                 sx={{ width: "100%" }}
-//             >
-//                 This is a success message!
-//             </Alert>
-//         </Snackbar>
-//     );
-// };
-
 function LoginPage() {
     const [openNotification, setOpenNotification] = useState(false);
 
@@ -59,9 +32,7 @@ function LoginPage() {
             password: "",
         },
         onSubmit: async (values) => {
-            alert(JSON.stringify(values, null, 2));
-            // post the data to backend
-
+            // send the login data to backend
             const postURL = "http://127.0.0.1:8000/api/login/";
             const response = await fetch(postURL, {
                 method: "POST",
@@ -90,7 +61,7 @@ function LoginPage() {
                     severity="success"
                     sx={{ width: "100%" }}
                 >
-                    This is a success message!
+                    Logged in! Redirecting to the search page...
                 </Alert>
             </Snackbar>
             <div className="flex flex-col flex-grow-0 items-center text-center lg:px-24 lg:py-36 md:p-128 md:items-start md:flex-shrink-0 md:flex-1 md:text-left">
