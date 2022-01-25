@@ -1,31 +1,68 @@
 import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
 import Box from "@mui/material/Box";
 import CardContent from "@mui/material/CardContent";
-import Checkbox from "@mui/material/Checkbox";
-import FormControl from "@mui/material/FormControl";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import CodeAppBar from "./CodeAppBar";
 import Toolbar from "@mui/material/Toolbar";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
+// const LoginNotification = (props) => {
+//     const { openNotification, setOpenNotification } = props;
+
+//     const handleClose = (event, reason) => {
+//         if (reason === "clickaway") {
+//             return;
+//         }
+
+//         setOpenNotification(false);
+//     };
+//     return (
+//         <Snackbar
+//             open={openNotification}
+//             autoHideDuration={6000}
+//             onClose={handleClose}
+//         >
+//             <Alert
+//                 onClose={handleClose}
+//                 severity="success"
+//                 sx={{ width: "100%" }}
+//             >
+//                 This is a success message!
+//             </Alert>
+//         </Snackbar>
+//     );
+// };
 
 function LoginPage() {
+    const [openNotification, setOpenNotification] = useState(false);
+
+    const handleNotificationClose = (event, reason) => {
+        if (reason === "clickaway") {
+            return;
+        }
+
+        setOpenNotification(false);
+    };
+
     const form = useFormik({
         initialValues: {
             username: "",
-            email: "",
             password: "",
-            password2: "",
         },
         onSubmit: async (values) => {
             alert(JSON.stringify(values, null, 2));
             // post the data to backend
 
-            const postURL = "http://127.0.0.1:8000/api/register/";
+            const postURL = "http://127.0.0.1:8000/api/login/";
             const response = await fetch(postURL, {
                 method: "POST",
                 headers: {
@@ -34,7 +71,7 @@ function LoginPage() {
                 body: JSON.stringify(values),
             });
             if (response.ok) {
-                alert("User created");
+                setOpenNotification(true);
             }
         },
     });
@@ -42,9 +79,23 @@ function LoginPage() {
     return (
         <div className="flex flex-col flex-auto flex-shrink-0 p-24 md:flex-row md:p-0">
             <CodeAppBar />
+            <Snackbar
+                open={openNotification}
+                autoHideDuration={6000}
+                onClose={handleNotificationClose}
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            >
+                <Alert
+                    onClose={handleNotificationClose}
+                    severity="success"
+                    sx={{ width: "100%" }}
+                >
+                    This is a success message!
+                </Alert>
+            </Snackbar>
             <div className="flex flex-col flex-grow-0 items-center text-center lg:px-24 lg:py-36 md:p-128 md:items-start md:flex-shrink-0 md:flex-1 md:text-left">
                 <Typography variant="h3" color="inherit" className="text-left">
-                    Welcome!
+                    Welcome to Code Warehouse!
                 </Typography>
 
                 <Typography
@@ -53,7 +104,8 @@ function LoginPage() {
                     className="max-w-512 text-left"
                     sx={{ marginTop: "16px" }}
                 >
-                    Log into the app to share your snippets with others.
+                    Log into your account to view your own posts, and share your
+                    snippets with others.
                 </Typography>
             </div>
 
@@ -61,7 +113,7 @@ function LoginPage() {
                 <Toolbar />
                 <CardContent className="flex flex-col items-center justify-center p-32 md:p-48 md:pt-128 ">
                     <Typography variant="h6" className="md:w-full p-8">
-                        CREATE AN ACCOUNT
+                        LOGIN TO YOUR ACCOUNT
                     </Typography>
 
                     <form
@@ -85,18 +137,6 @@ function LoginPage() {
 
                         <TextField
                             sx={{ marginBottom: "16px" }}
-                            label="Email"
-                            type="email"
-                            name="email"
-                            value={form.email}
-                            onChange={form.handleChange}
-                            variant="outlined"
-                            required
-                            fullWidth
-                        />
-
-                        <TextField
-                            sx={{ marginBottom: "16px" }}
                             label="Password"
                             type="password"
                             name="password"
@@ -107,35 +147,23 @@ function LoginPage() {
                             fullWidth
                         />
 
-                        <TextField
-                            sx={{ marginBottom: "16px" }}
-                            label="Password (Confirm)"
-                            type="password"
-                            name="password2"
-                            value={form.password2}
-                            onChange={form.handleChange}
-                            variant="outlined"
-                            required
-                            fullWidth
-                        />
-
                         <Button
                             variant="contained"
                             color="primary"
                             className="w-full mx-auto mt-16"
-                            aria-label="Register"
+                            aria-label="Log in"
                             type="submit"
                         >
-                            CREATE AN ACCOUNT
+                            LOGIN
                         </Button>
                     </form>
 
-                    <div className="flex flex-col items-center justify-center pt-24 pb-12">
+                    <div className="flex flex-col items-center justify-center pt-60 pb-12">
                         <span className="font-medium">
-                            Already have an account?
+                            Don't have an account?
                         </span>
-                        <Link className="font-medium" to="/pages/auth/login-2">
-                            Login
+                        <Link className="font-medium" to="/signup">
+                            Create an account
                         </Link>
                     </div>
                 </CardContent>
