@@ -69,7 +69,12 @@ function CodeSnippetCard(props) {
                     />
                 </div>
                 <Typography variant="body1">
-                    Posted on {new Date(pub_date).toLocaleString()}
+                    Posted on{" "}
+                    {new Date(pub_date).toLocaleDateString("en-us", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                    })}
                 </Typography>
             </CardActions>
         </Card>
@@ -184,6 +189,7 @@ export default function CodeWarehouseApp() {
     // handle search value change -- update the current state if needed
     function handleSearchChange(event) {
         setSearchKeyword(event.target.value);
+        setSelectedIndex(false);
     }
 
     return (

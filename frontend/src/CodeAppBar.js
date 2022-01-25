@@ -4,13 +4,10 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import logo from "./logo.svg"; // Tell webpack this JS file uses this image
-import { useTheme } from "@mui/material/styles";
 import AccountMenu from "./AccountMenu";
 import { Link } from "react-router-dom";
 
 export default function CodeAppBar() {
-    const theme = useTheme();
-
     return (
         <AppBar position="fixed">
             <Toolbar>
