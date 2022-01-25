@@ -10,15 +10,20 @@ import CodeAppBar from "./CodeAppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import { useNavigate } from "react-router-dom";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
 function LoginPage() {
+    const navigate = useNavigate();
+
+    // control open/close the notification
     const [openNotification, setOpenNotification] = useState(false);
 
     const handleNotificationClose = (event, reason) => {
+        // do not close the notification if it's click away
         if (reason === "clickaway") {
             return;
         }
@@ -26,6 +31,7 @@ function LoginPage() {
         setOpenNotification(false);
     };
 
+    // log in form: including username and password
     const form = useFormik({
         initialValues: {
             username: "",
@@ -43,6 +49,8 @@ function LoginPage() {
             });
             if (response.ok) {
                 setOpenNotification(true);
+                await new Promise((r) => setTimeout(r, 1000));
+                navigate("/");
             }
         },
     });
@@ -61,7 +69,7 @@ function LoginPage() {
                     severity="success"
                     sx={{ width: "100%" }}
                 >
-                    Logged in! Redirecting to the search page...
+                    You are logged in! Redirecting to the search page...
                 </Alert>
             </Snackbar>
             <div className="flex flex-col flex-grow-0 items-center text-center lg:px-24 lg:py-36 md:p-128 md:items-start md:flex-shrink-0 md:flex-1 md:text-left">
