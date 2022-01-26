@@ -22,6 +22,7 @@ import Chip from "@mui/material/Chip";
 import Divider from "@mui/material/Divider";
 import AccountMenu from "./AccountMenu";
 import { Link } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
 
 const drawerWidth = 260;
 
@@ -54,7 +55,9 @@ function CodeSnippetCard(props) {
         >
             <CardContent className="flex content-between flex-col mb-4">
                 <Typography variant="h4">{title}</Typography>
-                <Typography variant="body1">{content}</Typography>
+                <Typography variant="body1">
+                    <ReactMarkdown>{content}</ReactMarkdown>
+                </Typography>
             </CardContent>
             <Divider />
             <CardActions className="flex justify-between mt-auto m-2">
@@ -158,13 +161,12 @@ export default function CodeWarehouseApp() {
                     component="div"
                     className="text-center text-xl py-60"
                 >
-                    No result found!
+                    No results found! 😕
                 </Typography>
             );
         } else {
             return (
                 <div className="flex justify-center flex-col overflow-auto">
-                    {/* TODO: Display results in code snippet card*/}
                     {codeSnippets.map((record, index) => (
                         <CodeSnippetCard
                             key={index}
@@ -306,7 +308,14 @@ export default function CodeWarehouseApp() {
                                         }
                                     >
                                         <ListItemIcon>
-                                            <SourceIcon color="primary" />
+                                            <SourceIcon
+                                                color={
+                                                    // highlight the icon if it's selected
+                                                    selectedIndex === index
+                                                        ? "secondary"
+                                                        : "primary"
+                                                }
+                                            />
                                         </ListItemIcon>
                                         <ListItemText primary={text} />
                                     </ListItem>
