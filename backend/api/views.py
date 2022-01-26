@@ -53,6 +53,6 @@ class SearchCodeSnippet(ListAPIView):
             return queryset.annotate(
                 # use "title", "category", "content" to build the search vector
                 search=SearchVector("title", "category", "content")).filter(
-                    search=query)
+                    search=query).order_by('-pub_date')[:20]
         # otherwise (no search keyword): return all code snippets
         return queryset.all()

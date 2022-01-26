@@ -7,6 +7,7 @@ from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 
 
+# the serializer for login (with token)
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
     @classmethod
@@ -17,6 +18,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
 
 
+# the serializer for sign-ups
 class RegisterSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
         required=True,
