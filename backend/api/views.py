@@ -7,6 +7,7 @@ from django.contrib.postgres.search import SearchVector
 from datetime import datetime
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.permissions import IsAuthenticated
 
 
 # log users into the app
@@ -24,6 +25,8 @@ class Register(CreateAPIView):
 
 # allow users to create a new snippet
 class AddCodeSnippet(CreateAPIView):
+    # only loggeg-in users can post snippets
+    permission_classes = [IsAuthenticated]
     queryset = CodeSnippets.objects.all()
     serializer_class = CodeSnippetsSerializer
 
