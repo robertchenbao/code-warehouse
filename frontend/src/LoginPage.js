@@ -47,8 +47,13 @@ function LoginPage() {
                 },
                 body: JSON.stringify(values),
             });
+
+            const data = await response.json();
+
             if (response.ok) {
                 setOpenNotification(true);
+                // save the token in localStorage
+                localStorage.setItem("jwt_access_token", data.access);
                 await new Promise((r) => setTimeout(r, 1000));
                 navigate("/");
             }
@@ -69,7 +74,7 @@ function LoginPage() {
                     severity="success"
                     sx={{ width: "100%" }}
                 >
-                    You are logged in! Redirecting to the search page...
+                    Logged in! Redirecting to the search page...
                 </Alert>
             </Snackbar>
             <div className="flex flex-col flex-grow-0 items-center text-center lg:px-24 lg:py-36 md:p-128 md:items-start md:flex-shrink-0 md:flex-1 md:text-left">

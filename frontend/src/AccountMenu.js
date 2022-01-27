@@ -9,6 +9,7 @@ import { useTheme } from "@mui/material/styles";
 import Tooltip from "@mui/material/Tooltip";
 import AddIcon from "@mui/icons-material/Add";
 import PostDialog from "./PostDialog";
+import jwt_decode from "jwt-decode";
 
 export default function AccountMenu() {
     // control the account circle component
@@ -17,7 +18,13 @@ export default function AccountMenu() {
 
     // if the user is logged in (initialized as false)
     // TODO: use localStorage to check login status
-    let auth = false;
+    const token = localStorage.getItem("jwt_access_token");
+    const tokenExpireTime = jwt_decode(token).exp;
+
+    // check if the token is expired
+    const isTokenExpired = (expiry) => {
+        return Math.floor(new Date().getTime() / 1000) >= expiry;
+    };
 
     const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -45,7 +52,8 @@ export default function AccountMenu() {
         setOpen(false);
     };
 
-    if (auth) {
+    // if the token hasn't expired yet: display the post dialog and account info
+    if (!isTokenExpired(tokenExpireTime)) {
         return (
             <div className="flex flex-row items-center">
                 <Tooltip arrow title="Create a new snippet">
@@ -93,7 +101,9 @@ export default function AccountMenu() {
                 </Menu>
             </div>
         );
-    } else {
+    }
+    // if it is expired: return a login button
+    else {
         return (
             <Button
                 variant="contained"
