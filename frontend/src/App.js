@@ -22,7 +22,7 @@ import Chip from "@mui/material/Chip";
 import Divider from "@mui/material/Divider";
 import AccountMenu from "./AccountMenu";
 import { Link } from "react-router-dom";
-import ReactMarkdown from "react-markdown";
+import ReactMarkdown from "markdown-to-jsx";
 
 const drawerWidth = 260;
 
@@ -40,12 +40,55 @@ const SearchInput = styled(InputBase)(({ theme }) => ({
 /*
 Display the code snippets in tiles/cards
 */
+function MarkdownListItem(props) {
+    return (
+        <Box component="li" sx={{ mt: 1, typography: "body1" }} {...props} />
+    );
+}
+
 function CodeSnippetCard(props) {
     // info from the code snippet data
     const title = props.title;
     const content = props.content;
     const category = props.category;
     const pub_date = props.pub_date;
+
+    const markdownStyleOptions = {
+        overrides: {
+            h1: {
+                component: Typography,
+                props: {
+                    gutterBottom: true,
+                    variant: "h4",
+                    component: "h1",
+                },
+            },
+            h2: {
+                component: Typography,
+                props: { gutterBottom: true, variant: "h6", component: "h2" },
+            },
+            h3: {
+                component: Typography,
+                props: { gutterBottom: true, variant: "subtitle1" },
+            },
+            h4: {
+                component: Typography,
+                props: {
+                    gutterBottom: true,
+                    variant: "caption",
+                    paragraph: true,
+                },
+            },
+            p: {
+                component: Typography,
+                props: { paragraph: true },
+            },
+            a: { component: Link },
+            li: {
+                component: MarkdownListItem,
+            },
+        },
+    };
 
     return (
         <Card
@@ -55,9 +98,9 @@ function CodeSnippetCard(props) {
         >
             <CardContent className="flex content-between flex-col mb-4">
                 <Typography variant="h4">{title}</Typography>
-                <Typography variant="body1">
-                    <ReactMarkdown>{content}</ReactMarkdown>
-                </Typography>
+                <ReactMarkdown options={markdownStyleOptions}>
+                    {content}
+                </ReactMarkdown>
             </CardContent>
             <Divider />
             <CardActions className="flex justify-between mt-auto m-2">
