@@ -4,6 +4,7 @@ import Menu from "@mui/material/Menu";
 import { useNavigate } from "react-router-dom";
 import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
 import { useTheme } from "@mui/material/styles";
 import Tooltip from "@mui/material/Tooltip";
 import AddIcon from "@mui/icons-material/Add";
@@ -14,12 +15,11 @@ export default function AccountMenu() {
     const navigate = useNavigate();
     const theme = useTheme();
 
-    const [auth, setAuth] = React.useState(true);
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    // if the user is logged in (initialized as false)
+    // TODO: use localStorage to check login status
+    let auth = false;
 
-    const handleChange = (event) => {
-        setAuth(event.target.checked);
-    };
+    const [anchorEl, setAnchorEl] = React.useState(null);
 
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
@@ -47,19 +47,18 @@ export default function AccountMenu() {
 
     if (auth) {
         return (
-            <div className="flex flex-row">
+            <div className="flex flex-row items-center">
                 <Tooltip arrow title="Create a new snippet">
-                    <IconButton
+                    <Button
                         variant="contained"
-                        size="large"
+                        size="medium"
                         aria-label="create a new snippet"
                         onClick={handleOpenDialog}
-                        sx={{
-                            color: theme.palette.background.main,
-                        }}
+                        color="secondary"
+                        startIcon={<AddIcon />}
                     >
-                        <AddIcon />
-                    </IconButton>
+                        New
+                    </Button>
                 </Tooltip>
                 <PostDialog open={open} onClose={handleCloseDialog} />
                 <IconButton
@@ -93,6 +92,18 @@ export default function AccountMenu() {
                     <MenuItem onClick={handleClose}>My account</MenuItem>
                 </Menu>
             </div>
+        );
+    } else {
+        return (
+            <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => {
+                    navigate("/login");
+                }}
+            >
+                Login
+            </Button>
         );
     }
 }
