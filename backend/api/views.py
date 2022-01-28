@@ -8,6 +8,8 @@ from datetime import datetime
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 
 # log users into the app
@@ -21,6 +23,21 @@ class Register(CreateAPIView):
     queryset = User.objects.all()
     permission_classes = (AllowAny, )
     serializer_class = RegisterSerializer
+
+
+# get all uses' profiles
+class ReadAllProfiles(ListAPIView):
+    queryset = User.objects.all()
+    permission_classes = [IsAuthenticated]
+    serializer_class = RegisterSerializer
+
+
+# read current user's own profile
+class ReadOwnProfile(APIView):
+
+    def get(self, request):
+        serializer = RegisterSerializer(request.user)
+        return Response(serializer.data)
 
 
 # allow users to create a new snippet
