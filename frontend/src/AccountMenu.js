@@ -103,7 +103,15 @@ export default function AccountMenu() {
                     </MenuList>
                     <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
                     <MenuItem onClick={handleClose}>My account</MenuItem>
-                    <MenuItem onClick={logout}>Log out</MenuItem>
+                    <MenuItem
+                        onClick={() => {
+                            logout();
+                            // update the page state
+                            window.location.reload();
+                        }}
+                    >
+                        Log out
+                    </MenuItem>
                 </Menu>
             </div>
         );

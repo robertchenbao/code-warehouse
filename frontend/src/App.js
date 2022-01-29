@@ -131,7 +131,11 @@ export default function CodeWarehouseApp() {
     const theme = useTheme();
 
     const location = useLocation();
-    const [snackbar, setSnackbar] = useState(location.state.openSnackbar);
+
+    // open the snackbar notification, based on the URL's state
+    const [snackbarOpen, setSnackbarOpen] = useState(
+        location.state ? location.state.openSnackbar : null
+    );
 
     // the incoming data from backend (all code snippets)
     const [codeSnippets, setCodeSnippets] = useState(null);
@@ -184,9 +188,9 @@ export default function CodeWarehouseApp() {
             setCodeSnippets(data);
         }
         // TODO: use real snackbars!
-        alert(snackbar);
+        alert(snackbarOpen);
         fetchLatestPosts();
-    }, [snackbar]);
+    }, [snackbarOpen]);
 
     // display the results on frontend
     function displayContent() {
