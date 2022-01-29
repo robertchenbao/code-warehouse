@@ -18,13 +18,7 @@ export default function AccountMenu() {
 
     // if the user is logged in (initialized as false)
     // TODO: use localStorage to check login status
-    const token = localStorage.getItem("jwt_access_token");
-    const tokenExpireTime = jwt_decode(token).exp;
-
-    // check if the token is expired
-    const isTokenExpired = (expiry) => {
-        return Math.floor(new Date().getTime() / 1000) >= expiry;
-    };
+    let auth = false;
 
     const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -52,8 +46,10 @@ export default function AccountMenu() {
         setOpen(false);
     };
 
-    // if the token hasn't expired yet: display the post dialog and account info
-    if (!isTokenExpired(tokenExpireTime)) {
+    const token = localStorage.getItem("jwt_access_token");
+    let currentDate = new Date();
+    // Check if the token is present, AND has not expired
+    if (token && jwt_decode(token).exp * 1000 >= currentDate) {
         return (
             <div className="flex flex-row items-center">
                 <Tooltip arrow title="Create a new snippet">
@@ -101,9 +97,7 @@ export default function AccountMenu() {
                 </Menu>
             </div>
         );
-    }
-    // if it is expired: return a login button
-    else {
+    } else {
         return (
             <Button
                 variant="contained"
