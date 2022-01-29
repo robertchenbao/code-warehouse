@@ -26,12 +26,14 @@ export default function PostDialog(props) {
             content: "",
         },
         onSubmit: async (values) => {
-            // alert(JSON.stringify(values, null, 2));
+            // get token -- user must login to post
+            const token = localStorage.getItem("jwt_access_token");
             const postURL = "http://127.0.0.1:8000/api/create/snippet/";
             const response = await fetch(postURL, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`, // JWT token for auth
                 },
                 body: JSON.stringify(values),
             });
