@@ -18,7 +18,6 @@ export default function AccountMenu() {
 
     // if the user is logged in (initialized as false)
     // TODO: use localStorage to check login status
-    let auth = false;
 
     const [anchorEl, setAnchorEl] = React.useState(null);
 

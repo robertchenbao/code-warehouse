@@ -11,6 +11,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { useNavigate } from "react-router-dom";
+import jwt_decode from "jwt-decode";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -53,7 +54,13 @@ function LoginPage() {
             if (response.ok) {
                 setOpenNotification(true);
                 // save the token in localStorage
-                localStorage.setItem("jwt_access_token", data.access);
+                let token = data.access;
+                localStorage.setItem("jwt_access_token", token);
+                // extract the username; save it to local storage
+                if (token) {
+                    let username = jwt_decode(token).username;
+                    localStorage.setItem("username", username);
+                }
                 await new Promise((r) => setTimeout(r, 1000));
                 navigate("/");
             }
