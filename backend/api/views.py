@@ -40,6 +40,17 @@ class ReadProfileView(APIView):
         return Response(serializer.data)
 
 
+# read current user's own profile
+class ReadOwnSnippetsView(ListAPIView):
+
+    serializer_class = CodeSnippetsSerializer
+
+    def get_queryset(self):
+        current_user = self.request.user
+        queryset = CodeSnippets.objects.filter(author=current_user.id)
+        return queryset.all()
+
+
 # allow users to create a new snippet
 class AddCodeSnippet(CreateAPIView):
     # only loggeg-in users can post snippets
