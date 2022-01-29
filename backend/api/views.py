@@ -33,7 +33,7 @@ class ReadAllProfiles(ListAPIView):
 
 
 # read current user's own profile
-class ReadOwnProfile(APIView):
+class ReadProfileView(APIView):
 
     def get(self, request):
         serializer = RegisterSerializer(request.user)
