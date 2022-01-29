@@ -10,6 +10,7 @@ import Tooltip from "@mui/material/Tooltip";
 import AddIcon from "@mui/icons-material/Add";
 import PostDialog from "./PostDialog";
 import jwt_decode from "jwt-decode";
+import { MenuList } from "@mui/material";
 
 export default function AccountMenu() {
     // control the account circle component
@@ -91,6 +92,14 @@ export default function AccountMenu() {
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
                 >
+                    <MenuList
+                        sx={{
+                            paddingY: "6px",
+                            paddingX: "16px",
+                        }}
+                    >
+                        <b>Welcome, {localStorage.getItem("username")}!</b>
+                    </MenuList>
                     <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
                     <MenuItem onClick={handleClose}>My account</MenuItem>
                 </Menu>
