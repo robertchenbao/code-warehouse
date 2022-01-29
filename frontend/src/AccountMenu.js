@@ -46,6 +46,16 @@ export default function AccountMenu() {
         setOpen(false);
     };
 
+    const logout = () => {
+        // Clear access token and ID token from local storage
+        localStorage.removeItem("jwt_access_token");
+        // clear everything in the localStorage
+        localStorage.removeItem("username");
+
+        window.location.reload();
+        sessionStorage.clear();
+    };
+
     const token = localStorage.getItem("jwt_access_token");
     let currentDate = new Date();
     // Check if the token is present, AND has not expired
@@ -102,6 +112,7 @@ export default function AccountMenu() {
                     </MenuList>
                     <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
                     <MenuItem onClick={handleClose}>My account</MenuItem>
+                    <MenuItem onClick={logout}>Log out</MenuItem>
                 </Menu>
             </div>
         );
