@@ -8,9 +8,9 @@ import CardContent from "@mui/material/CardContent";
 import AppBar from "@mui/material/AppBar";
 import Typography from "@mui/material/Typography";
 import LinearProgress from "@mui/material/LinearProgress";
-
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
+import { logout } from "./warehouseService";
 
 export default function Profile() {
     const theme = useTheme();
@@ -33,10 +33,15 @@ export default function Profile() {
                 }
             );
             const data = await response.json();
-            setUserInfo(data);
+            if (response.ok) {
+                setUserInfo(data);
+            } else {
+                logout();
+                navigate("/", { state: { openSnackbar: true } });
+            }
         };
         fetchData();
-    }, [token]);
+    }, [token, navigate]);
 
     let currentDate = new Date();
 

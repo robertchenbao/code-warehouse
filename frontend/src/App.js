@@ -21,7 +21,7 @@ import List from "@mui/material/List";
 import Chip from "@mui/material/Chip";
 import Divider from "@mui/material/Divider";
 import AccountMenu from "./AccountMenu";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import ReactMarkdown from "markdown-to-jsx";
 
 const drawerWidth = 260;
@@ -130,6 +130,9 @@ function CodeSnippetCard(props) {
 export default function CodeWarehouseApp() {
     const theme = useTheme();
 
+    const location = useLocation();
+    const [snackbar, setSnackbar] = useState(location.state.openSnackbar);
+
     // the incoming data from backend (all code snippets)
     const [codeSnippets, setCodeSnippets] = useState(null);
 
@@ -180,8 +183,10 @@ export default function CodeWarehouseApp() {
             const data = await response.json();
             setCodeSnippets(data);
         }
+        // TODO: use real snackbars!
+        alert(snackbar);
         fetchLatestPosts();
-    }, []);
+    }, [snackbar]);
 
     // display the results on frontend
     function displayContent() {

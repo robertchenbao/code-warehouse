@@ -11,6 +11,7 @@ import AddIcon from "@mui/icons-material/Add";
 import PostDialog from "./PostDialog";
 import jwt_decode from "jwt-decode";
 import { MenuList } from "@mui/material";
+import { logout } from "./warehouseService";
 
 export default function AccountMenu() {
     // control the account circle component
@@ -44,16 +45,6 @@ export default function AccountMenu() {
 
     const handleCloseDialog = () => {
         setOpen(false);
-    };
-
-    const logout = () => {
-        // Clear access token and ID token from local storage
-        localStorage.removeItem("jwt_access_token");
-        // clear everything in the localStorage
-        localStorage.removeItem("username");
-
-        window.location.reload();
-        sessionStorage.clear();
     };
 
     const token = localStorage.getItem("jwt_access_token");
