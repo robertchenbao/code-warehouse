@@ -6,9 +6,6 @@
   "author": "Robert Bao",
   "license": "MIT",
   "private": true,
-  "cacheDirectories": [
-    "frontend/node_modules"
-  ],
   "scripts": {
     "start": "react-scripts start",
     "build": "NODE_ENV=production cd frontend/ && npm install && npm run build && cd ..",
@@ -16,6 +13,9 @@
     "eject": "react-scripts eject",
     "postinstall": "npm run build"
   },
+  "cacheDirectories": [
+    "frontend/node_modules"
+  ],
   "engines": {
     "node": "17.3.0",
     "npm": "8.3.0"
