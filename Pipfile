@@ -13,6 +13,7 @@ djangorestframework-simplejwt = "*"
 django-filter = "==2.4.0"
 whitenoise = "*"
 gunicorn = "*"
+python-decouple = "*"
 
 [dev-packages]
 yapf = "*"

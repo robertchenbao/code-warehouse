@@ -16,6 +16,7 @@ import secrets
 import os
 from os import terminal_size
 import secrets
+from decouple import config
 
 generated_key = secrets.token_urlsafe(60)
 
@@ -158,7 +159,16 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {}  #Empty the default database settings
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        "NAME": config("DB_DATABASE"),
+        "USER": config("DB_USER"),
+        "PASSWORD": config("DB_PASSWORD"),
+        "HOST": config("DATABASE_URL"),
+    }
+}
+
 #Add this to the end of settings.py:
 try:
     from .local_settings import *
