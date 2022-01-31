@@ -50,7 +50,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'frontend/build/static'),
 ]
 
-ALLOWED_HOSTS = ['code-warehouse.herokuapp.com', '127.0.0.1:8000']
+ALLOWED_HOSTS = ['*']
 
 REACT_APP_DIR = os.path.join(BASE_DIR, 'frontend')
 
@@ -148,11 +148,11 @@ DATABASES = {
     }
 }
 
-#Add this to the end of settings.py:
-try:
-    from .local_settings import *
-except ImportError:
-    pass
+# #Add this to the end of settings.py:
+# try:
+#     from .local_settings import *
+# except ImportError:
+#     pass
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
