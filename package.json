@@ -9,6 +9,13 @@
   "cacheDirectories": [
     "frontend/node_modules"
   ],
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "NODE_ENV=production cd frontend/ && npm install && npm run build && cd ..",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "postinstall": "npm run build"
+  },
   "engines": {
     "node": "17.3.0",
     "npm": "8.3.0"
