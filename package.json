@@ -1,0 +1,17 @@
+{
+  "name": "lucid-air-quality",
+  "version": "1.0.1",
+  "main": "index.js",
+  "repository": "",
+  "author": "Robert Bao",
+  "license": "MIT",
+  "private": true,
+  "cacheDirectories": [
+    "frontend/node_modules"
+  ],
+  "engines": {
+    "node": "17.3.0",
+    "npm": "8.3.0"
+  },
+  "homepage": "."
+}
