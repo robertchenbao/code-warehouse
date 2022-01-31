@@ -22,7 +22,7 @@ export default function Profile() {
     useEffect(() => {
         const fetchData = async () => {
             const response = await fetch(
-                `http://127.0.0.1:8000/api/read/users/me/`,
+                `https://code-warehouse.herokuapp.com/api/read/users/me/`,
                 {
                     // posts the form to users/me/items. You need to login to be able to send this
                     method: "GET",

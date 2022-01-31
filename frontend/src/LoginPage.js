@@ -40,7 +40,7 @@ function LoginPage() {
         },
         onSubmit: async (values) => {
             // send the login data to backend
-            const postURL = "http://127.0.0.1:8000/api/login/";
+            const postURL = "https://code-warehouse.herokuapp.com/api/login/";
             const response = await fetch(postURL, {
                 method: "POST",
                 headers: {

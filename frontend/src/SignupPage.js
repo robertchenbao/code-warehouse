@@ -21,7 +21,8 @@ function SignupPage() {
             alert(JSON.stringify(values, null, 2));
             // post the data to backend
 
-            const postURL = "http://127.0.0.1:8000/api/register/";
+            const postURL =
+                "https://code-warehouse.herokuapp.com/api/register/";
             const response = await fetch(postURL, {
                 method: "POST",
                 headers: {

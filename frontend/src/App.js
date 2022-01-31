@@ -148,7 +148,7 @@ export default function CodeWarehouseApp() {
 
     // shared function, for snippet searching
     async function searchSnippets(keyword) {
-        const searchURL = `http://127.0.0.1:8000/api/read/snippet/?keyword=${keyword}/`;
+        const searchURL = `https://code-warehouse.herokuapp.com/api/read/snippet/?keyword=${keyword}/`;
 
         // get the data from URL
         const response = await fetch(searchURL, {
@@ -175,7 +175,7 @@ export default function CodeWarehouseApp() {
     // display the latest snippets, when the page loads
     useEffect(() => {
         async function fetchLatestPosts() {
-            const latestURL = "http://127.0.0.1:8000/api/read/latest-snippets/";
+            const latestURL = "https://code-warehouse.herokuapp.com/api/read/latest-snippets/";
             // get the data from URL
             const response = await fetch(latestURL, {
                 method: "GET",

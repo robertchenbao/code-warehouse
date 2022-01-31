@@ -28,7 +28,8 @@ export default function PostDialog(props) {
         onSubmit: async (values) => {
             // get token -- user must login to post
             const token = localStorage.getItem("jwt_access_token");
-            const postURL = "http://127.0.0.1:8000/api/create/snippet/";
+            const postURL =
+                "https://code-warehouse.herokuapp.com/api/create/snippet/";
             const response = await fetch(postURL, {
                 method: "POST",
                 headers: {
