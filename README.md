@@ -1,6 +1,6 @@
 # Code Warehouse
 
-Manage and share all your code snippets with ease
+Manage all your code snippets, and share them with ease
 
 ![code-warehouse-screenshot-v2](https://user-images.githubusercontent.com/30555057/151898464-d5983712-866f-4867-9177-78f2485917b2.png)
 
