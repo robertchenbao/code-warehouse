@@ -18,9 +18,6 @@ export default function AccountMenu() {
     const navigate = useNavigate();
     const theme = useTheme();
 
-    // if the user is logged in (initialized as false)
-    // TODO: use localStorage to check login status
-
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const handleMenu = (event) => {
@@ -47,7 +44,9 @@ export default function AccountMenu() {
         setOpen(false);
     };
 
+    // if the user is logged in (initialized as false)
     const token = localStorage.getItem("jwt_access_token");
+
     let currentDate = new Date();
     // Check if the token is present, AND has not expired
     if (token && jwt_decode(token).exp * 1000 >= currentDate) {
