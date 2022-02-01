@@ -55,6 +55,9 @@ function CodeSnippetCard(props) {
 
     const markdownStyleOptions = {
         overrides: {
+            span: {
+                component: Typography,
+            },
             h1: {
                 component: Typography,
                 props: {
@@ -175,7 +178,8 @@ export default function CodeWarehouseApp() {
     // display the latest snippets, when the page loads
     useEffect(() => {
         async function fetchLatestPosts() {
-            const latestURL = "https://code-warehouse.herokuapp.com/api/read/latest-snippets/";
+            const latestURL =
+                "https://code-warehouse.herokuapp.com/api/read/latest-snippets/";
             // get the data from URL
             const response = await fetch(latestURL, {
                 method: "GET",
