@@ -23,6 +23,8 @@ import Divider from "@mui/material/Divider";
 import AccountMenu from "./AccountMenu";
 import { Link, useLocation } from "react-router-dom";
 import ReactMarkdown from "markdown-to-jsx";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 const drawerWidth = 260;
 
@@ -137,8 +139,16 @@ export default function CodeWarehouseApp() {
 
     // open the snackbar notification, based on the URL's state
     const [snackbarOpen, setSnackbarOpen] = useState(
-        location.state ? location.state.openSnackbar : null
+        location.state ? location.state.openSnackbar : false
     );
+
+    const handleSnackbarClose = (event, reason) => {
+        if (reason === "clickaway") {
+            return;
+        }
+
+        setSnackbarOpen(false);
+    };
 
     // the incoming data from backend (all code snippets)
     const [codeSnippets, setCodeSnippets] = useState(null);
@@ -191,8 +201,7 @@ export default function CodeWarehouseApp() {
             const data = await response.json();
             setCodeSnippets(data);
         }
-        // TODO: use real snackbars!
-        alert(snackbarOpen);
+
         fetchLatestPosts();
     }, [snackbarOpen]);
 
@@ -260,6 +269,20 @@ export default function CodeWarehouseApp() {
                 backgroundColor: theme.palette.background.main,
             }}
         >
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={6000}
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            >
+                <Alert
+                    onClose={handleSnackbarClose}
+                    severity="error"
+                    variant="filled"
+                    elevation={4}
+                >
+                    Please log back in to access your profile!
+                </Alert>
+            </Snackbar>
             <AppBar position="fixed">
                 <Toolbar>
                     <Link

@@ -36,6 +36,7 @@ export default function Profile() {
             if (response.ok) {
                 setUserInfo(data);
             } else {
+                // if cannot access user info: show an error message
                 logout();
                 navigate("/", { state: { openSnackbar: true } });
             }

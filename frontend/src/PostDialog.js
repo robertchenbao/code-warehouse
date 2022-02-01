@@ -18,7 +18,6 @@ export default function PostDialog(props) {
 
     const postForm = useFormik({
         initialValues: {
-            // TODO: actually set author ID
             author: 1,
             pub_date: new Date().toISOString(),
             title: "",
