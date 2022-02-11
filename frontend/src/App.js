@@ -203,7 +203,7 @@ export default function CodeWarehouseApp() {
         }
 
         fetchLatestPosts();
-    }, [snackbarOpen]);
+    }, []);
 
     // display the results on frontend
     function displayContent() {
