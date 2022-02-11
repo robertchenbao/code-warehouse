@@ -61,8 +61,7 @@ class AddCodeSnippet(CreateAPIView):
 
 # get the latest 10 snippets, at page load
 class GetLatestTenSnippets(ListAPIView):
-    now_time = datetime.now()
-    queryset = CodeSnippets.objects.order_by('pub_date')[:10][::-1]
+    queryset = CodeSnippets.objects.order_by('-id')[:10:-1]
     serializer_class = CodeSnippetsSerializer
 
 
