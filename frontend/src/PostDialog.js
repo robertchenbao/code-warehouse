@@ -3,13 +3,12 @@ import Button from "@mui/material/Button";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
-
 import Dialog from "@mui/material/Dialog";
 import TextField from "@mui/material/TextField";
 import { useFormik } from "formik";
 import { languages } from "./languages";
 import Autocomplete from "@mui/material/Autocomplete";
-
+import { config } from "./Constants";
 import { useNavigate } from "react-router-dom";
 
 export default function PostDialog(props) {
@@ -27,8 +26,7 @@ export default function PostDialog(props) {
         onSubmit: async (values) => {
             // get token -- user must login to post
             const token = localStorage.getItem("jwt_access_token");
-            const postURL =
-                "https://code-warehouse.herokuapp.com/api/create/snippet/";
+            const postURL = `${config.url}/api/create/snippet/`;
             const response = await fetch(postURL, {
                 method: "POST",
                 headers: {

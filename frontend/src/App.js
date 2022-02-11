@@ -25,6 +25,7 @@ import { Link, useLocation } from "react-router-dom";
 import ReactMarkdown from "markdown-to-jsx";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import { config } from "./Constants";
 
 const drawerWidth = 260;
 
@@ -161,7 +162,7 @@ export default function CodeWarehouseApp() {
 
     // shared function, for snippet searching
     async function searchSnippets(keyword) {
-        const searchURL = `https://code-warehouse.herokuapp.com/api/read/snippet/?keyword=${keyword}/`;
+        const searchURL = `${config.url}/api/read/snippet/?keyword=${keyword}/`;
 
         // get the data from URL
         const response = await fetch(searchURL, {
@@ -188,8 +189,7 @@ export default function CodeWarehouseApp() {
     // display the latest snippets, when the page loads
     useEffect(() => {
         async function fetchLatestPosts() {
-            const latestURL =
-                "https://code-warehouse.herokuapp.com/api/read/latest-snippets/";
+            const latestURL = `${config.url}/api/read/latest-snippets/`;
             // get the data from URL
             const response = await fetch(latestURL, {
                 method: "GET",

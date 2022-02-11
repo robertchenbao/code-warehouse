@@ -11,6 +11,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import { logout } from "./warehouseService";
+import { config } from "./Constants";
 
 export default function Profile() {
     const theme = useTheme();
@@ -21,17 +22,14 @@ export default function Profile() {
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await fetch(
-                `https://code-warehouse.herokuapp.com/api/read/users/me/`,
-                {
-                    // posts the form to users/me/items. You need to login to be able to send this
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`, // this is the JWT to authenticate
-                    },
-                }
-            );
+            const response = await fetch(`${config.url}/api/read/users/me/`, {
+                // posts the form to users/me/items. You need to login to be able to send this
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`, // this is the JWT to authenticate
+                },
+            });
             const data = await response.json();
             if (response.ok) {
                 setUserInfo(data);

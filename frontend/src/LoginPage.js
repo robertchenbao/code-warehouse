@@ -11,6 +11,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { useNavigate } from "react-router-dom";
+import { config } from "./Constants";
 import jwt_decode from "jwt-decode";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -40,7 +41,7 @@ function LoginPage() {
         },
         onSubmit: async (values) => {
             // send the login data to backend
-            const postURL = "https://code-warehouse.herokuapp.com/api/login/";
+            const postURL = `${config.url}/api/login/`;
             const response = await fetch(postURL, {
                 method: "POST",
                 headers: {
