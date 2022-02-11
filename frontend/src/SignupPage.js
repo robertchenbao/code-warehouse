@@ -3,13 +3,19 @@ import Box from "@mui/material/Box";
 import CardContent from "@mui/material/CardContent";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import CodeAppBar from "./CodeAppBar";
 import Toolbar from "@mui/material/Toolbar";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+import { useNavigate } from "react-router-dom";
+import { config } from "./Constants";
 
 function SignupPage() {
+    const navigate = useNavigate();
+
     const form = useFormik({
         initialValues: {
             username: "",
@@ -18,11 +24,7 @@ function SignupPage() {
             password2: "",
         },
         onSubmit: async (values) => {
-            alert(JSON.stringify(values, null, 2));
-            // post the data to backend
-
-            const postURL =
-                "https://code-warehouse.herokuapp.com/api/register/";
+            const postURL = `${config.url}/api/register/`;
             const response = await fetch(postURL, {
                 method: "POST",
                 headers: {
@@ -31,14 +33,41 @@ function SignupPage() {
                 body: JSON.stringify(values),
             });
             if (response.ok) {
-                alert("User created");
+                setSnackbarOpen(true);
+                await new Promise((r) => setTimeout(r, 1000));
+                navigate("/login");
             }
         },
     });
 
+    // handle the success notification
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+    const handleSnackbarClose = (event, reason) => {
+        if (reason === "clickaway") {
+            return;
+        }
+
+        setSnackbarOpen(false);
+    };
+
     return (
         <div className="flex flex-col flex-auto flex-shrink-0 p-24 md:flex-row md:p-0">
             <CodeAppBar />
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={6000}
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            >
+                <Alert
+                    onClose={handleSnackbarClose}
+                    severity="success"
+                    variant="filled"
+                    elevation={4}
+                >
+                    Your account is created!
+                </Alert>
+            </Snackbar>
             <div className="flex flex-col flex-grow-0 items-center text-center lg:px-24 lg:py-36 md:p-128 md:items-start md:flex-shrink-0 md:flex-1 md:text-left">
                 <Typography variant="h3" color="inherit" className="text-left">
                     Welcome to Code Warehouse!
